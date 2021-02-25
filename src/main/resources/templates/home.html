@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Feeds</title>
+</head>
+<body>
+
+<section>
+    <h1>Podcasts</h1>
+    <ul>
+        <li th:each="podcast : ${podcasts}">
+            [(${podcast.feedUrl})]
+            <form th:action="@{/podcasts/${podcast.id}/delete}" th:method="POST">
+                <button type="submit" name="id" th:value="${podcast.id}">Delete</button>
+            </form>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h1>Add new podcasts</h1>
+    <form th:action="@{/podcasts}" th:method="POST">
+        <input type="text" name="feedUrl">
+        <input type="submit">
+    </form>
+</section>
+
+</body>
+</html>
