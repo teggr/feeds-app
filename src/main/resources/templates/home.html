@@ -11,9 +11,9 @@
     <ul>
         <li th:each="podcast : ${podcasts}">
             [(${podcast.feedUrl})]
-            <form th:action="@{/podcasts/${podcast.id}/delete}" th:method="POST">
+            <!--<form th:action="@{/podcasts/${podcast.id}/delete}" th:method="POST">
                 <button type="submit" name="id" th:value="${podcast.id}">Delete</button>
-            </form>
+            </form>-->
         </li>
     </ul>
 </section>
