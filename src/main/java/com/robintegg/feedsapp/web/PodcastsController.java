@@ -19,14 +19,14 @@ public class PodcastsController {
     private final PodcastRepository podcastRepository;
 
     @PostMapping("/podcasts")
-    public String post(@RequestParam("feedUrl") URL feedUrl) {
+    public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
         Podcast podcast = Podcast.forUrl(feedUrl);
         podcastRepository.save(podcast);
         return "redirect:/";
     }
 
     @GetMapping("/podcasts/{id}")
-    public String post(@PathVariable("id") Long id, Model model) {
+    public String get(@PathVariable("id") Long id, Model model) {
         Podcast podcast = podcastRepository.findById(id)
                 .orElseThrow();
         model.addAttribute("podcast", podcast);
@@ -35,9 +35,17 @@ public class PodcastsController {
     }
 
     @PostMapping("/podcasts/{id}/delete")
-    public String post(@PathVariable("id") Long id) {
+    public String postDelete(@PathVariable("id") Long id) {
         podcastRepository.deleteById(id);
         return "redirect:/";
+    }
+
+    @PostMapping("/podcasts/{id}/refresh")
+    public String postRefresh(@PathVariable("id") Long id) {
+        Podcast podcast = podcastRepository.findById(id).orElseThrow();
+        podcast.fetch();
+        podcastRepository.save(podcast);
+        return "redirect:/podcasts/" + id;
     }
 
 }

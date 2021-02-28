@@ -10,11 +10,8 @@
     <h1>Podcasts</h1>
     <ul>
         <li th:each="podcast : ${podcasts}">
-            [(${podcast.feedUrl})]
+            [(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]
             <a th:href="@{/podcasts/{podcastId}(podcastId=${podcast.id})}">View</a>
-            <!--<form th:action="@{/podcasts/${podcast.id}/delete}" th:method="POST">
-                <button type="submit" name="id" th:value="${podcast.id}">Delete</button>
-            </form>-->
         </li>
     </ul>
 </section>

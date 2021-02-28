@@ -12,7 +12,13 @@
 
 <section>
     <h1>Podcast</h1>
-    [(${podcast.feedUrl})]
+    <div>
+        [(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]
+    </div>
+    <div>
+        [(${podcast.feedUrl})]
+    </div>
+
 </section>
 
 <section>
@@ -41,6 +47,9 @@
     <h1>Actions</h1>
     <form th:action="@{/podcasts/{podcastId}/delete(podcastId=${podcast.id})}" th:method="POST">
         <button type="submit" name="id" th:value="${podcast.id}">Delete</button>
+    </form>
+    <form th:action="@{/podcasts/{podcastId}/refresh(podcastId=${podcast.id})}" th:method="POST">
+        <button type="submit" name="id" th:value="${podcast.id}">Refresh</button>
     </form>
 </section>
 

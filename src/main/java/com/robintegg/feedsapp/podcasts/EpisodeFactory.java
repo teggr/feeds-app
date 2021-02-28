@@ -5,11 +5,9 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.SneakyThrows;
-import org.springframework.util.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +15,8 @@ import java.util.List;
 class EpisodeFactory {
 
     @SneakyThrows
-    public static List<Episode> get(URL feedUrl) {
+    public static List<Episode> get(String feedData) {
 
-        String feedData = StreamUtils.copyToString(feedUrl.openStream(), StandardCharsets.UTF_8);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(new ByteArrayInputStream(feedData.getBytes())));
 
@@ -27,6 +24,7 @@ class EpisodeFactory {
 
         System.out.println(feed.getUri());
         System.out.println(feed.getTitle());
+        System.out.println(feed.getLink());
 
         System.out.println(feed.getPublishedDate());
 
