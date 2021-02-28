@@ -30,7 +30,7 @@ class EpisodeFactory {
 
         System.out.println(feed.getPublishedDate());
 
-     //   System.out.println("Episodes since " + modifiedSince);
+        //   System.out.println("Episodes since " + modifiedSince);
 
         List<Episode> episodes = new ArrayList<>();
 
@@ -39,20 +39,22 @@ class EpisodeFactory {
 
             // System.out.println(entry.getTitle());
 
-            System.out.println(entry.getPublishedDate());
+            System.out.println(entry);
 
             if (entry.getPublishedDate() != null) {
 
-             //   Instant pd = entry.getPublishedDate().toInstant();
-               // Instant mod = modifiedSince.toInstant(ZoneOffset.UTC);
-               // System.out.println(pd.getEpochSecond() + " : " + mod.getEpochSecond());
-               // if (pd.isAfter(mod)) {
-                    episodes.add(
-                            new Episode(
-                                    entry.getTitle(),
-                                    entry.getPublishedDate().toInstant().atZone(ZoneId.systemDefault())
-                                    ));
-               // }
+                //   Instant pd = entry.getPublishedDate().toInstant();
+                // Instant mod = modifiedSince.toInstant(ZoneOffset.UTC);
+                // System.out.println(pd.getEpochSecond() + " : " + mod.getEpochSecond());
+                // if (pd.isAfter(mod)) {
+                episodes.add(
+                        new Episode(
+                                entry.getTitle(),
+                                new URL(entry.getLink()),
+                                entry.getPublishedDate().toInstant().atZone(ZoneId.systemDefault()),
+                                new Audio(new URL(entry.getEnclosures().get(0).getUrl()), entry.getEnclosures().get(0).getType())
+                        ));
+                // }
             }
 
         }

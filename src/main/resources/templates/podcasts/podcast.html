@@ -23,7 +23,13 @@
                 <h2 th:text="${episode.title}"></h2>
                 <p th:text="${episode.publishedDate}"></p>
                 <div>
-                    <a th:href="${episode}">Listen</a>
+                    <audio controls>
+                        <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
+                        Your browser does not support the audio tag.
+                    </audio>
+                </div>
+                <div>
+                    <a th:href="${episode.linkUrl}" >Go to site</a>
                 </div>
             </article>
         </li>
