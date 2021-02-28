@@ -16,6 +16,22 @@
 </section>
 
 <section>
+    <h1>Episodes</h1>
+    <ul>
+        <li th:each="episode : ${episodes}">
+            <article>
+                <h2 th:text="${episode.title}"></h2>
+                <p th:text="${episode.publishedDate}"></p>
+                <div>
+                    <a th:href="${episode}">Listen</a>
+                </div>
+            </article>
+        </li>
+    </ul>
+
+</section>
+
+<section>
     <h1>Actions</h1>
     <form th:action="@{/podcasts/{podcastId}/delete(podcastId=${podcast.id})}" th:method="POST">
         <button type="submit" name="id" th:value="${podcast.id}">Delete</button>

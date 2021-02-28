@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "podcasts")
@@ -27,4 +29,12 @@ public class Podcast {
     protected Podcast() {
     } // for persistence
 
+    public List<Episode> getMostRecentEpisodes(int maxEpisodes) {
+
+        return EpisodeFactory.get(feedUrl).stream()
+                .sorted(Episode::ORDER_BY_MOST_RECENT)
+                .limit(maxEpisodes)
+                .collect(Collectors.toList());
+
+    }
 }

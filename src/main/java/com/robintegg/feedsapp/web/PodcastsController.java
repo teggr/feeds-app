@@ -27,8 +27,10 @@ public class PodcastsController {
 
     @GetMapping("/podcasts/{id}")
     public String post(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("podcast", podcastRepository.findById(id)
-                .orElseThrow());
+        Podcast podcast = podcastRepository.findById(id)
+                .orElseThrow();
+        model.addAttribute("podcast", podcast);
+        model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
         return "podcasts/podcast";
     }
 

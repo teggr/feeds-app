@@ -15,3 +15,4 @@
 * the secure developer		 - https://feeds.simplecast.com/47yfLpm0
 * airhacks.fm				 - https://airhacks.fm/episodes/feed.xml
 * developer tea				 - https://feeds.simplecast.com/dLRotFGk
+* heroku                     - https://www.heroku.com/podcasts/codeish.rss
