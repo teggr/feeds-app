@@ -7,6 +7,7 @@ import org.springframework.util.StreamUtils;
 import javax.persistence.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,9 @@ public class Podcast {
     @Lob
     @Column(name = "feed_data")
     private String feedData;
+
+    @Column(name = "last_fetched")
+    private ZonedDateTime lastFetched;
 
     // feed derived values
     @Column(name = "feed_title")
@@ -67,6 +71,8 @@ public class Podcast {
 
         feedTitle = podcastInfo.getTitle();
         feedLinkUrl = podcastInfo.getLinkUrl();
+
+        lastFetched = ZonedDateTime.now();
 
     }
 

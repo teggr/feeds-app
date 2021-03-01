@@ -1,6 +1,7 @@
 package com.robintegg.feedsapp.web;
 
 import com.robintegg.feedsapp.podcasts.Podcast;
+import com.robintegg.feedsapp.podcasts.PodcastFetchService;
 import com.robintegg.feedsapp.podcasts.PodcastRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,18 @@ import java.net.URL;
 public class PodcastsController {
 
     private final PodcastRepository podcastRepository;
+    private final PodcastFetchService podcastFetchService;
 
     @PostMapping("/podcasts")
     public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
         Podcast podcast = Podcast.forUrl(feedUrl);
         podcastRepository.save(podcast);
+        return "redirect:/";
+    }
+
+    @PostMapping("/podcasts/refresh")
+    public String postRefreshAll() {
+        podcastFetchService.fetchAllIgnoringErrors();
         return "redirect:/";
     }
 
@@ -42,9 +50,7 @@ public class PodcastsController {
 
     @PostMapping("/podcasts/{id}/refresh")
     public String postRefresh(@PathVariable("id") Long id) {
-        Podcast podcast = podcastRepository.findById(id).orElseThrow();
-        podcast.fetch();
-        podcastRepository.save(podcast);
+        podcastFetchService.fetch(id);
         return "redirect:/podcasts/" + id;
     }
 

@@ -8,7 +8,7 @@
 * off heap                   - https://offheap.libsyn.com/rss
 * shop talk                  - https://shoptalkshow.com/feed/podcast
 * testguild                  - https://testtalks.libsyn.com/rss
-* ab testing				 - https://www.angryweasel.com/ABTesting/?feed=podcast
+* ab testing				 - https://anchor.fm/s/45580f58/podcast/rss
 * java pub house			 - https://javapubhouse.libsyn.com/rss
 * legacy code rocks			 - https://legacycoderocks.libsyn.com/rss
 * a bootiful podcast		 - https://feed.podbean.com/bootifulpodcast/feed.xml

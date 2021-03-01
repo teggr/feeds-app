@@ -17,11 +17,18 @@
 </section>
 
 <section>
+
     <h1>Add new podcasts</h1>
     <form th:action="@{/podcasts}" th:method="POST">
         <input type="text" name="feedUrl">
         <input type="submit">
     </form>
+
+    <h1>Refresh All</h1>
+    <form th:action="@{/podcasts/refresh}" th:method="POST">
+        <input type="submit">
+    </form>
+
 </section>
 
 </body>
