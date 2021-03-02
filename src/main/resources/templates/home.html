@@ -2,32 +2,78 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Feeds</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 </head>
 <body>
 
-<section>
-    <h1>Podcasts</h1>
+<section class="section">
+    <h1 class="title">Podcasts</h1>
     <ul>
         <li th:each="podcast : ${podcasts}">
-            [(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]
-            <a th:href="@{/podcasts/{podcastId}(podcastId=${podcast.id})}">View</a>
+
+            <div class="box">
+
+                <a th:href="@{/podcasts/{podcastId}(podcastId=${podcast.id})}">
+
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image is-64x64">
+                                <img th:src="${podcast.feedImageUrl}" th:alt="${podcast.feedImageTitle}">
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p class="title is-5">[(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]</p>
+                            </div>
+                        </div>
+                    </article>
+
+                </a>
+
+            </div>
         </li>
     </ul>
+
 </section>
 
-<section>
+<section class="section">
 
-    <h1>Add new podcasts</h1>
-    <form th:action="@{/podcasts}" th:method="POST">
-        <input type="text" name="feedUrl">
-        <input type="submit">
-    </form>
+    <div class="box">
 
-    <h1>Refresh All</h1>
-    <form th:action="@{/podcasts/refresh}" th:method="POST">
-        <input type="submit">
-    </form>
+        <h2 class="title is-2">Add new podcasts</h2>
+        <form th:action="@{/podcasts}" th:method="POST">
+            <div class="field">
+                    <div class="control">
+                        <input type="text" name="feedUrl" class="input">
+                    </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button type="submit" name="add" value="add" class="button is-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</section>
+
+<section class="section">
+
+    <div class="box">
+
+        <h2 class="title is-2">Manage podcasts</h2>
+        <form th:action="@{/podcasts}" th:method="POST">
+            <div class="field">
+                <div class="control">
+                    <button type="submit" name="refresh" value="refresh" class="button">Refresh</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
 
 </section>
 

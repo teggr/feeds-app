@@ -20,14 +20,14 @@ public class PodcastsController {
     private final PodcastRepository podcastRepository;
     private final PodcastFetchService podcastFetchService;
 
-    @PostMapping("/podcasts")
+    @PostMapping(path="/podcasts",params = "add")
     public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
         Podcast podcast = Podcast.forUrl(feedUrl);
         podcastRepository.save(podcast);
         return "redirect:/";
     }
 
-    @PostMapping("/podcasts/refresh")
+    @PostMapping(path="/podcasts",params = "refresh")
     public String postRefreshAll() {
         podcastFetchService.fetchAllIgnoringErrors();
         return "redirect:/";

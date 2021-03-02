@@ -5,10 +5,9 @@ import lombok.Value;
 import java.net.URL;
 
 @Value
-class PodcastInfo {
+public class Image {
 
+    URL url;
     String title;
-    URL linkUrl;
-    Image image;
 
 }

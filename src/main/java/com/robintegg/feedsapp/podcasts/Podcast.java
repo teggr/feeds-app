@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @Getter
 public class Podcast {
 
+
+
     public static Podcast forUrl(URL feedUrl) {
         Podcast podcast = new Podcast();
         podcast.feedUrl = feedUrl;
@@ -45,6 +47,12 @@ public class Podcast {
     @Column(name = "feed_link_url")
     private URL feedLinkUrl;
 
+    @Column(name = "feed_image_url")
+    private URL feedImageUrl;
+
+    @Column(name = "feed_image_title")
+    private String feedImageTitle;
+
     protected Podcast() {
     } // for persistence
 
@@ -71,6 +79,8 @@ public class Podcast {
 
         feedTitle = podcastInfo.getTitle();
         feedLinkUrl = podcastInfo.getLinkUrl();
+        feedImageUrl = podcastInfo.getImage().getUrl();
+        feedImageTitle = podcastInfo.getImage().getTitle();
 
         lastFetched = ZonedDateTime.now();
 

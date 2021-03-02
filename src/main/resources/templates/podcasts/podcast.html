@@ -2,7 +2,9 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Feeds</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Podcast</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 </head>
 <body>
 
@@ -10,7 +12,7 @@
     <a th:href="@{/}">Home</a>
 </nav>
 
-<section>
+<section class="section">
     <h1>Podcast</h1>
     <div>
         [(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]
@@ -21,7 +23,7 @@
 
 </section>
 
-<section>
+<section class="section">
     <h1>Episodes</h1>
     <ul>
         <li th:each="episode : ${episodes}">
@@ -43,7 +45,7 @@
 
 </section>
 
-<section>
+<section class="section">
     <h1>Actions</h1>
     <form th:action="@{/podcasts/{podcastId}/delete(podcastId=${podcast.id})}" th:method="POST">
         <button type="submit" name="id" th:value="${podcast.id}">Delete</button>
