@@ -67,6 +67,11 @@
 			<artifactId>rome</artifactId>
 			<version>1.15.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.rometools</groupId>
+			<artifactId>rome-modules</artifactId>
+			<version>1.15.0</version>
+		</dependency>
 
 		<!-- db tools -->
 		<dependency>
