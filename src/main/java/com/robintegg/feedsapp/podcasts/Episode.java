@@ -17,4 +17,8 @@ public class Episode {
         return e2.getPublishedDate().compareTo(e1.getPublishedDate());
     }
 
+    public boolean hasEpisodeLink() {
+        return linkUrl != null;
+    }
+
 }
