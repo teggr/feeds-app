@@ -8,51 +8,81 @@
 </head>
 <body>
 
-<nav>
-    <a th:href="@{/}">Home</a>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+
+    <div class="navbar-brand">
+        <a class="navbar-item" th:href="@{/}">
+            <img th:src="@{/images/apple-touch-icon.png}" width="28" height="28">
+            <span class="is-size-3"><strong>Feeds</strong></span>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" th:href="@{/}">
+                Home
+            </a>
+        </div>
+    </div>
+
 </nav>
 
-<section class="section">
-    <h1>Podcast</h1>
-    <div>
-        [(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]
+<section class="hero is-primary">
+    <div class="hero-body">
+        <p class="title">
+            [(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]
+        </p>
+        <p class="subtitle">
+            [(${podcast.feedUrl})]
+        </p>
     </div>
-    <div>
-        [(${podcast.feedUrl})]
-    </div>
-
 </section>
 
 <section class="section">
-    <h1>Episodes</h1>
+    <h2 class="title is-2">Episodes</h2>
     <ul>
         <li th:each="episode : ${episodes}">
-            <article>
-                <h2 th:text="${episode.title}"></h2>
-                <p th:text="${episode.publishedDate}"></p>
-                <div>
-                    <audio controls>
-                        <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
-                        Your browser does not support the audio tag.
-                    </audio>
-                </div>
-                <div th:if="${episode.hasEpisodeLink()}">
-                    <a th:href="${episode.linkUrl}" >Go to site</a>
-                </div>
-            </article>
+            <div class="box">
+                <article>
+                    <h5 th:text="${episode.title}" class="title is-5"></h5>
+                    <p th:text="${#temporals.format(episode.publishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
+                    <div>
+                        <audio controls>
+                            <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
+                            Your browser does not support the audio tag.
+                        </audio>
+                    </div>
+                    <div class="block"></div>
+                    <div th:if="${episode.hasEpisodeLink()}">
+                        <a th:href="${episode.linkUrl}" class="button is-link is-small" >Go to site</a>
+                    </div>
+                </article>
+            </div>
         </li>
     </ul>
 
 </section>
 
 <section class="section">
-    <h1>Actions</h1>
-    <form th:action="@{/podcasts/{podcastId}/delete(podcastId=${podcast.id})}" th:method="POST">
-        <button type="submit" name="id" th:value="${podcast.id}">Delete</button>
+    <div class="box">
+
+    <h2 class="title is-2">Manage podcast</h2>
+    <form th:action="@{/podcasts/{podcastId}(podcastId=${podcast.id})}" th:method="POST">
+        <div class="field">
+            <div class="control">
+                <button type="submit" name="delete is-dange" class="button">Delete</button>
+                <button type="submit" name="refresh" class="button">Refresh</button>
+            </div>
+        </div>
     </form>
-    <form th:action="@{/podcasts/{podcastId}/refresh(podcastId=${podcast.id})}" th:method="POST">
-        <button type="submit" name="id" th:value="${podcast.id}">Refresh</button>
-    </form>
+
+    </div>
 </section>
 
 </body>
