@@ -53,6 +53,14 @@
                             <div class="content">
                                 <p class="title is-5">[(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]</p>
                             </div>
+                            <form th:action="@{/subscriptions}" method="post">
+                                <div class="field">
+                                    <p class="control">
+                                        <input type="hidden" name="podcastId" th:value="${podcast.id}"></input>
+                                        <button type="submit" class="button is-primary is-small">Subscribe</button>
+                                    </p>
+                                </div>
+                            </form>
                         </div>
                     </article>
 

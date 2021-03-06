@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 @Getter
 public class Podcast {
 
-
-
     public static Podcast forUrl(URL feedUrl) {
         Podcast podcast = new Podcast();
         podcast.feedUrl = feedUrl;
