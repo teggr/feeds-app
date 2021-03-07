@@ -63,14 +63,16 @@
                             <div class="content">
                                 <p class="title is-5">[(${podcastSubscription.podcast.feedTitle} ? ${podcastSubscription.podcast.feedTitle} : ${podcastSubscription.podcast.feedUrl})]</p>
                             </div>
-                            <!--<form th:action="@{/subscriptions}" method="post">
-                                <div class="field">
-                                    <p class="control">
-                                        <input type="hidden" name="podcastId" th:value="${podcastSubscription.podcast.id}"></input>
-                                        <button type="submit" class="button is-primary is-small">Subscribe</button>
-                                    </p>
-                                </div>
-                            </form>-->
+                            <div class="level">
+                                <form th:action="@{/subscriptions/{subscriptionId}/unsubscribe(subscriptionId=${podcastSubscription.subscription.id})}" method="post">
+                                    <div class="field">
+                                        <p class="control">
+                                            <input type="hidden" name="subscriptionId" th:value="${podcastSubscription.subscription.id}"></input>
+                                            <button type="submit" class="button is-primary is-small">Unsubscribe</button>
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </article>
 
