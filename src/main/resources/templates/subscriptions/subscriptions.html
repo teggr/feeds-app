@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
+    <title>Podcast</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}">
 </head>
 <body>
 
@@ -37,33 +36,41 @@
 
 </nav>
 
+<section class="hero is-primary">
+    <div class="hero-body">
+        <p class="title">
+            Subscriptions
+        </p>
+    </div>
+</section>
+
 <section class="section">
-    <h1 class="title">Podcasts</h1>
+    <h2 class="title is-2">Podcasts</h2>
     <ul>
-        <li th:each="podcast : ${podcasts}">
+        <li th:each="podcastSubscription : ${podcastSubscriptions}">
 
             <div class="box">
 
-                <a th:href="@{/podcasts/{podcastId}(podcastId=${podcast.id})}">
+                <a th:href="@{/podcasts/{podcastId}(podcastId=${podcastSubscription.podcast.id})}">
 
                     <article class="media">
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img th:src="${podcast.feedImageUrl}" th:alt="${podcast.feedImageTitle}">
+                                <img th:src="${podcastSubscription.podcast.feedImageUrl}" th:alt="${podcastSubscription.podcast.feedImageTitle}">
                             </p>
                         </figure>
                         <div class="media-content">
                             <div class="content">
-                                <p class="title is-5">[(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]</p>
+                                <p class="title is-5">[(${podcastSubscription.podcast.feedTitle} ? ${podcastSubscription.podcast.feedTitle} : ${podcastSubscription.podcast.feedUrl})]</p>
                             </div>
-                            <form th:action="@{/subscriptions}" method="post">
+                            <!--<form th:action="@{/subscriptions}" method="post">
                                 <div class="field">
                                     <p class="control">
-                                        <input type="hidden" name="podcastId" th:value="${podcast.id}"></input>
+                                        <input type="hidden" name="podcastId" th:value="${podcastSubscription.podcast.id}"></input>
                                         <button type="submit" class="button is-primary is-small">Subscribe</button>
                                     </p>
                                 </div>
-                            </form>
+                            </form>-->
                         </div>
                     </article>
 
@@ -72,45 +79,6 @@
             </div>
         </li>
     </ul>
-
-</section>
-
-<section class="section">
-
-    <div class="box">
-
-        <h2 class="title is-2">Add new podcasts</h2>
-        <form th:action="@{/podcasts}" th:method="POST">
-            <div class="field">
-                    <div class="control">
-                        <input type="text" name="feedUrl" class="input">
-                    </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button type="submit" name="add" value="add" class="button is-primary">Submit</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
-
-</section>
-
-<section class="section">
-
-    <div class="box">
-
-        <h2 class="title is-2">Manage podcasts</h2>
-        <form th:action="@{/podcasts}" th:method="POST">
-            <div class="field">
-                <div class="control">
-                    <button type="submit" name="refresh" value="refresh" class="button">Refresh All</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
 
 </section>
 
