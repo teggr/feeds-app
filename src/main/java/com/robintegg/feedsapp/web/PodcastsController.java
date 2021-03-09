@@ -3,6 +3,8 @@ package com.robintegg.feedsapp.web;
 import com.robintegg.feedsapp.podcasts.Podcast;
 import com.robintegg.feedsapp.podcasts.PodcastFetchService;
 import com.robintegg.feedsapp.podcasts.PodcastRepository;
+import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
+import com.robintegg.feedsapp.subscriptions.Subscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ public class PodcastsController {
 
     private final PodcastRepository podcastRepository;
     private final PodcastFetchService podcastFetchService;
+    private final PodcastSubscriptions podcastSubscriptions;
 
     @PostMapping(path="/podcasts",params = "add")
     public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
@@ -39,6 +42,11 @@ public class PodcastsController {
                 .orElseThrow();
         model.addAttribute("podcast", podcast);
         model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
+        // TODO: user related
+        Subscription subscription = podcastSubscriptions.getByPodcast(id);
+        model.addAttribute("subscribe", subscription == null);
+        model.addAttribute("unsubscribe", subscription != null);
+        model.addAttribute("subscription", subscription);
         return "podcasts/podcast";
     }
 

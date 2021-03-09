@@ -49,11 +49,18 @@
 
 <section class="section">
     <h3 class="title is-3">Subscription</h3>
-    <form th:action="@{/subscriptions/subscribe}" method="post">
+    <form th:action="@{/subscriptions/subscribe}" method="post" th:if="${subscribe}">
         <div class="field">
             <p class="control">
                 <input type="hidden" name="podcastId" th:value="${podcast.id}"></input>
                 <button type="submit" class="button is-primary is-small">Subscribe</button>
+            </p>
+        </div>
+    </form>
+    <form th:action="@{/subscriptions/{subscriptionId}/unsubscribe(subscriptionId=${subscription.id})}" method="post" th:if="${unsubscribe}">
+        <div class="field">
+            <p class="control">
+                <button type="submit" class="button is-primary is-small">Unsubscribe</button>
             </p>
         </div>
     </form>

@@ -56,7 +56,7 @@
                             <div class="content">
                                 <p class="title is-5">[(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]</p>
                             </div>
-                            <div class="level">
+                            <div class="level" th:if="${subscriptions.canSubscribe(podcast.id)}">
                                 <form th:action="@{/subscriptions/subscribe}" method="post">
                                     <div class="field">
                                         <p class="control">

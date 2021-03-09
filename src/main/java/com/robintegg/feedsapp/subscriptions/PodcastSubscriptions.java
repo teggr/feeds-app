@@ -11,12 +11,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PodcastSubscriptions {
 
     private final PodcastRepository podcastRepository;
     private final SubscriptionRepository subscriptionRepository;
 
-    @Transactional(readOnly = true)
     public List<PodcastSubscription> findAll() {
         List<PodcastSubscription> list = new ArrayList<>();
         List<Subscription> subscriptions = subscriptionRepository.findAll();
@@ -28,4 +28,9 @@ public class PodcastSubscriptions {
         }
         return list;
     }
+
+    public Subscription getByPodcast(Long podcastId) {
+        return subscriptionRepository.findByPodcastId(podcastId).orElse(null);
+    }
+
 }
