@@ -26,6 +26,8 @@ class EpisodeFactory {
 
         log.info("uri={},title={},link={}", feed.getUri(), feed.getTitle(), feed.getLink());
 
+        Image podcastImage = PodcastInfoFactory.getImage(feed);
+
         List<Episode> episodes = new ArrayList<>();
 
         List<SyndEntry> entries = feed.getEntries();
@@ -39,12 +41,14 @@ class EpisodeFactory {
                 URL linkUrl = getLinkUrl(entry);
                 ZonedDateTime publishedDate = getPublishedDate(entry);
                 String title = entry.getTitle();
+                Image image = podcastImage;
 
                 episodes.add(
                         new Episode(
                                 title,
                                 linkUrl,
                                 publishedDate,
+                                image,
                                 audio
                         ));
 

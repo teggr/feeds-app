@@ -11,6 +11,7 @@ public class Episode {
     String title;
     URL linkUrl;
     ZonedDateTime publishedDate;
+    Image image;
     Audio audio;
 
     public static int ORDER_BY_MOST_RECENT(Episode e1, Episode e2) {
@@ -19,6 +20,14 @@ public class Episode {
 
     public boolean hasEpisodeLink() {
         return linkUrl != null;
+    }
+
+    public URL getImageUrl() {
+        return image.getUrl();
+    }
+
+    public String getImageTitle() {
+        return image.getTitle();
     }
 
 }

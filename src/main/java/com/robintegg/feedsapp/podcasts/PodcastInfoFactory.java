@@ -27,7 +27,7 @@ class PodcastInfoFactory {
 
     }
 
-    private static Image getImage(SyndFeed feed) throws MalformedURLException {
+    public static Image getImage(SyndFeed feed) throws MalformedURLException {
         if (feed.getImage() != null) {
             return new Image(new URL(feed.getImage().getUrl()), feed.getImage().getTitle());
         } else {

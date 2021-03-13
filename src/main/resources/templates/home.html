@@ -15,79 +15,30 @@
 <section class="section">
     <h1 class="title">Podcasts</h1>
     <ul>
-        <li th:each="podcast : ${podcasts}">
-
+        <li th:each="episode : ${episodes}">
             <div class="box">
-
-                <a th:href="@{/podcasts/{podcastId}(podcastId=${podcast.id})}">
-
-                    <article class="media">
-                        <figure class="media-left">
-                            <p class="image is-64x64">
-                                <img th:src="${podcast.feedImageUrl}" th:alt="${podcast.feedImageTitle}">
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p class="title is-5">[(${podcast.feedTitle} ? ${podcast.feedTitle} : ${podcast.feedUrl})]</p>
-                            </div>
-                            <div class="level" th:if="${subscriptions.canSubscribe(podcast.id)}">
-                                <form th:action="@{/subscriptions/subscribe}" method="post">
-                                    <div class="field">
-                                        <p class="control">
-                                            <input type="hidden" name="podcastId" th:value="${podcast.id}"></input>
-                                            <button type="submit" class="button is-primary is-small">Subscribe</button>
-                                        </p>
-                                    </div>
-                                </form>
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-64x64">
+                            <img th:src="${episode.imageUrl}" th:alt="${episode.imageTitle}">
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <div class="content">
+                            <p class="title is-5">[(${episode.title})]</p>
+                            <p th:text="${#temporals.format(episode.publishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
+                            <div>
+                                <audio controls>
+                                    <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
+                                    Your browser does not support the audio tag.
+                                </audio>
                             </div>
                         </div>
-                    </article>
-
-                </a>
-
+                    </div>
+                </article>
             </div>
         </li>
     </ul>
-
-</section>
-
-<section class="section">
-
-    <div class="box">
-
-        <h2 class="title is-2">Add new podcasts</h2>
-        <form th:action="@{/podcasts}" th:method="POST">
-            <div class="field">
-                    <div class="control">
-                        <input type="text" name="feedUrl" class="input">
-                    </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    <button type="submit" name="add" value="add" class="button is-primary">Submit</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
-
-</section>
-
-<section class="section">
-
-    <div class="box">
-
-        <h2 class="title is-2">Manage podcasts</h2>
-        <form th:action="@{/podcasts}" th:method="POST">
-            <div class="field">
-                <div class="control">
-                    <button type="submit" name="refresh" value="refresh" class="button">Refresh All</button>
-                </div>
-            </div>
-        </form>
-
-    </div>
 
 </section>
 
