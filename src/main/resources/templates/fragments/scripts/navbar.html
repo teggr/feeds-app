@@ -1,6 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation" th:fragment="main-navigation">
+
+    <div class="navbar-brand">
+        <a class="navbar-item" th:href="@{/}">
+            <img th:src="@{/images/apple-touch-icon.png}" width="28" height="28">
+            <span class="is-size-3"><strong>Feeds</strong></span>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" th:href="@{/}">
+                Home
+            </a>
+            <a class="navbar-item" th:href="@{/podcasts}">
+                Podcasts
+            </a>
+            <a class="navbar-item" th:href="@{/subscriptions}">
+                Subscriptions
+            </a>
+        </div>
+    </div>
+
+</nav>
+
 <script th:fragment="burger-toggle" type="application/javascript">
     document.addEventListener('DOMContentLoaded', () => {
 

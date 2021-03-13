@@ -23,6 +23,14 @@ public class PodcastsController {
     private final PodcastFetchService podcastFetchService;
     private final PodcastSubscriptions podcastSubscriptions;
 
+    @GetMapping("/podcasts")
+    public String get(Model model) {
+        model.addAttribute("podcasts", podcastRepository.findAll());
+        // TODO: user related
+        model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll()));
+        return "podcasts/podcasts";
+    }
+
     @PostMapping(path="/podcasts",params = "add")
     public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
         Podcast podcast = Podcast.forUrl(feedUrl);
