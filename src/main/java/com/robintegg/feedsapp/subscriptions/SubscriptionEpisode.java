@@ -29,7 +29,19 @@ public class SubscriptionEpisode {
     @Column(name = "episode_id")
     private String episodeId;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private SubscriptionEpisodeStatus status;
+
     protected SubscriptionEpisode() {
     } // for persistence
+
+    public void notInterested() {
+        status = SubscriptionEpisodeStatus.NOT_INTERESTED;
+    }
+
+    public boolean isInterested() {
+        return status != SubscriptionEpisodeStatus.NOT_INTERESTED;
+    }
 
 }

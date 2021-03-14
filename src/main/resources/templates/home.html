@@ -27,11 +27,18 @@
                         <div class="content">
                             <p class="title is-5">[(${episode.title})]</p>
                             <p th:text="${#temporals.format(episode.publishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
-                            <div>
-                                <audio controls>
-                                    <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
-                                    Your browser does not support the audio tag.
-                                </audio>
+                        </div>
+                        <div class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <button class="button is-danger is-outlined not-interested" th:data-episode-id="${episode.id}">Not Interested</button>
+                                </div>
+                                <div class="level-item">
+                                    <audio controls>
+                                        <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
+                                        Your browser does not support the audio tag.
+                                    </audio>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -44,6 +51,45 @@
 
 <!-- scripts -->
 <th:block th:replace="fragments/scripts/navbar :: burger-toggle" />
+
+<script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Get all "not-interested" elements
+        const $notInterested = Array.prototype.slice.call(document.querySelectorAll('.not-interested'), 0);
+
+        // Check if there are any elements
+        if ($notInterested.length > 0) {
+
+            // Add a click event on each of them
+            $notInterested.forEach( el => {
+                el.addEventListener('click', () => {
+
+                    // Get the target from the "data-target" attribute
+                    const episodeId = el.dataset.episodeId;
+                    const $target = el.closest('li');
+
+                    console.log(episodeId);
+                    // Toggle the "is-hidden" class on the parent list element
+                    $target.classList.toggle('is-hidden');
+
+                    fetch('/subscriptions/not-interested/'+ episodeId, {
+                        method: 'POST'
+                    })
+                    .then(response => response)
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+                });
+            });
+        }
+
+    });
+</script>
 
 </body>
 </html>

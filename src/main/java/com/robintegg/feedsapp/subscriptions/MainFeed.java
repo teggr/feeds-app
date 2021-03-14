@@ -34,4 +34,15 @@ public class MainFeed {
 
     }
 
+    public void notInterested(String episodeId) {
+
+        Subscription subscription = subscriptionRepository
+                .findBySubscriptionEpisodesEpisodeId(episodeId).orElseThrow();
+
+        subscription.notInterested(episodeId);
+
+        subscriptionRepository.save(subscription);
+
+    }
+
 }

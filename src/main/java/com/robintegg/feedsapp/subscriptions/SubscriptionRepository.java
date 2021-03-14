@@ -8,4 +8,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     Optional<Subscription> findByPodcastId(Long podcastId);
 
+    Optional<Subscription> findBySubscriptionEpisodesEpisodeId(String episodeId);
+
 }

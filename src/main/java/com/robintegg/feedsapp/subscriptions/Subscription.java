@@ -63,12 +63,19 @@ public class Subscription {
 
     private Set<String> getAllSubscriptionEpisodeIds() {
         return subscriptionEpisodes.stream()
+                .filter(SubscriptionEpisode::isInterested)
                 .map(SubscriptionEpisode::getEpisodeId)
                 .collect(Collectors.toSet());
     }
 
     private void addEpisodeSubscription(Episode episode) {
         subscriptionEpisodes.add(SubscriptionEpisode.forEpisode(this, episode));
+    }
+
+    public void notInterested(String episodeId) {
+        subscriptionEpisodes.stream()
+                .filter(se -> se.getEpisodeId().equals(episodeId))
+                .forEach(SubscriptionEpisode::notInterested);
     }
 
 }

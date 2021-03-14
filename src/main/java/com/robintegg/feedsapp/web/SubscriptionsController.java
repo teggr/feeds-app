@@ -1,10 +1,8 @@
 package com.robintegg.feedsapp.web;
 
-import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
-import com.robintegg.feedsapp.subscriptions.Subscription;
-import com.robintegg.feedsapp.subscriptions.SubscriptionRepository;
-import com.robintegg.feedsapp.subscriptions.SubscriptionSetup;
+import com.robintegg.feedsapp.subscriptions.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +14,18 @@ public class SubscriptionsController {
     private final SubscriptionSetup subscriptionSetup;
     private final PodcastSubscriptions podcastSubscriptions;
     private final SubscriptionRepository subscriptionRepository;
+    private final MainFeed mainFeed;
 
     @PostMapping(path = "/subscriptions/subscribe")
     public String postSubscribe(@RequestHeader("Referer") String referer, @RequestParam("podcastId") Long podcastId) {
         Subscription subscription = subscriptionSetup.subscribeToPodcast(podcastId);
         return "redirect:" + referer;
+    }
+
+    @PostMapping(path = "/subscriptions/not-interested/{episodeId}")
+    public ResponseEntity postNotInterested(@PathVariable("episodeId") String episodeId) {
+        mainFeed.notInterested(episodeId);
+        return ResponseEntity.accepted().build();
     }
 
     @GetMapping(path = "/subscriptions")
