@@ -14,7 +14,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String get(Model model) {
-        model.addAttribute("episodes", mainFeed.get());
+        model.addAttribute("episodes", mainFeed.fetch());
         return "home";
     }
 

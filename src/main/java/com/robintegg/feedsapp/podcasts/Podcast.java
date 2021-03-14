@@ -8,8 +8,10 @@ import javax.persistence.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -81,6 +83,30 @@ public class Podcast {
         feedImageTitle = podcastInfo.getImage().getTitle();
 
         lastFetched = ZonedDateTime.now();
+
+    }
+
+    public Collection<Episode> getEpisodesSince(ZonedDateTime dateTime) {
+
+        if (feedData == null) {
+            return Collections.emptyList();
+        }
+
+        return EpisodeFactory.get(feedData).stream()
+                .filter(e -> e.isPublishedSince(dateTime))
+                .collect(Collectors.toList());
+
+    }
+
+    public Collection<Episode> getEpisodes(Set<String> ids) {
+
+        if (feedData == null) {
+            return Collections.emptyList();
+        }
+
+        return EpisodeFactory.get(feedData).stream()
+                .filter(e -> ids.contains(e.getId()))
+                .collect(Collectors.toList());
 
     }
 

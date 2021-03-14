@@ -6,10 +6,12 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.DigestUtils;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -33,7 +35,9 @@ class EpisodeFactory {
         List<SyndEntry> entries = feed.getEntries();
         for (SyndEntry entry : entries) {
 
-            log.info("uri={},title={},link={}", entry.getUri(), entry.getTitle(), entry.getLink());
+            String idAsUriHash = DigestUtils.md5DigestAsHex(entry.getUri().getBytes(StandardCharsets.UTF_8));
+
+            log.debug("id={},uri={},title={},link={}", idAsUriHash, entry.getUri(), entry.getTitle(), entry.getLink());
 
             if (entry.getPublishedDate() != null) {
 
@@ -42,9 +46,11 @@ class EpisodeFactory {
                 ZonedDateTime publishedDate = getPublishedDate(entry);
                 String title = entry.getTitle();
                 Image image = podcastImage;
+                String id = idAsUriHash;
 
                 episodes.add(
                         new Episode(
+                                id,
                                 title,
                                 linkUrl,
                                 publishedDate,

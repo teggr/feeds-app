@@ -12,20 +12,21 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class MainFeed {
 
     private final PodcastRepository podcastRepository;
     private final SubscriptionRepository subscriptionRepository;
 
-    public List<Episode> get() {
+    public List<Episode> fetch() {
 
         List<Episode> list = new ArrayList<>();
         List<Subscription> subscriptions = subscriptionRepository.findAll();
         for (Subscription sub : subscriptions) {
             Podcast podcast = podcastRepository.findById(sub.getPodcastId()).orElse(null);
             if (podcast != null) {
-                list.addAll(podcast.getMostRecentEpisodes(3));
+                list.addAll(sub.updateEpisodes(podcast));
+                sub = subscriptionRepository.save(sub);
             }
         }
         list.sort(Episode::ORDER_BY_MOST_RECENT);

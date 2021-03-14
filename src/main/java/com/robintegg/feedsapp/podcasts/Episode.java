@@ -8,6 +8,7 @@ import java.time.ZonedDateTime;
 @Value
 public class Episode {
 
+    String id;
     String title;
     URL linkUrl;
     ZonedDateTime publishedDate;
@@ -28,6 +29,10 @@ public class Episode {
 
     public String getImageTitle() {
         return image.getTitle();
+    }
+
+    public boolean isPublishedSince(ZonedDateTime dateTime) {
+        return publishedDate.isAfter(dateTime);
     }
 
 }
