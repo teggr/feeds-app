@@ -44,4 +44,12 @@ public class SubscriptionEpisode {
         return status != SubscriptionEpisodeStatus.NOT_INTERESTED;
     }
 
+    public void interested() {
+        status = SubscriptionEpisodeStatus.INTERESTED;
+    }
+
+    public boolean hasNoStatus() {
+        return status == null;
+    }
+
 }

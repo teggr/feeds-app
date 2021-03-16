@@ -2,6 +2,6 @@ package com.robintegg.feedsapp.subscriptions;
 
 public enum SubscriptionEpisodeStatus {
 
-    NOT_INTERESTED;
+    NOT_INTERESTED, INTERESTED;
 
 }

@@ -28,6 +28,12 @@ public class SubscriptionsController {
         return ResponseEntity.accepted().build();
     }
 
+    @PostMapping(path = "/subscriptions/interested/{episodeId}")
+    public ResponseEntity postInterested(@PathVariable("episodeId") String episodeId) {
+        mainFeed.interested(episodeId);
+        return ResponseEntity.accepted().build();
+    }
+
     @GetMapping(path = "/subscriptions")
     public String getPodcastSubscriptions(Model model) {
         model.addAttribute("podcastSubscriptions", podcastSubscriptions.findAll());

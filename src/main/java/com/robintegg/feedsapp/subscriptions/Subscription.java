@@ -54,11 +54,18 @@ public class Subscription {
 
         newEpisodes.forEach(this::addEpisodeSubscription);
 
-        Collection<Episode> allEpisodes = podcast.getEpisodes(getAllSubscriptionEpisodeIds());
+        Collection<Episode> allEpisodes = podcast.getEpisodes(getUnseenSubscriptionEpisodeIds());
 
         lastUpdated = ZonedDateTime.now();
 
         return allEpisodes;
+    }
+
+    private Set<String> getUnseenSubscriptionEpisodeIds() {
+        return subscriptionEpisodes.stream()
+                .filter(SubscriptionEpisode::hasNoStatus)
+                .map(SubscriptionEpisode::getEpisodeId)
+                .collect(Collectors.toSet());
     }
 
     private Set<String> getAllSubscriptionEpisodeIds() {
@@ -78,4 +85,13 @@ public class Subscription {
                 .forEach(SubscriptionEpisode::notInterested);
     }
 
+    public void interested(String episodeId) {
+        subscriptionEpisodes.stream()
+                .filter(se -> se.getEpisodeId().equals(episodeId))
+                .forEach(SubscriptionEpisode::interested);
+    }
+
+    public Collection<Episode> getInterestedEpisodes(Podcast podcast) {
+       return podcast.getEpisodes(getAllSubscriptionEpisodeIds());
+    }
 }

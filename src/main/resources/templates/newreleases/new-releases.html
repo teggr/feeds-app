@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
+    <title>New Releases</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}">
 </head>
@@ -31,13 +31,16 @@
                         <div class="level">
                             <div class="level-left">
                                 <div class="level-item">
+                                    <button class="button is-success is-outlined interested" th:data-episode-id="${episode.id}">Interested</button>
+                                </div>
+                                <div class="level-item">
+                                    <button class="button is-danger is-outlined not-interested" th:data-episode-id="${episode.id}">Not Interested</button>
+                                </div>
+                                <div class="level-item">
                                     <audio controls>
                                         <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
                                         Your browser does not support the audio tag.
                                     </audio>
-                                </div>
-                                <div class="level-item">
-                                    <button class="button is-danger is-outlined not-interested" th:data-episode-id="${episode.id}">Not Interested</button>
                                 </div>
                             </div>
                         </div>
