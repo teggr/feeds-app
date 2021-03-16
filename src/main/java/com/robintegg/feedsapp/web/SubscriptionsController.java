@@ -14,7 +14,8 @@ public class SubscriptionsController {
     private final SubscriptionSetup subscriptionSetup;
     private final PodcastSubscriptions podcastSubscriptions;
     private final SubscriptionRepository subscriptionRepository;
-    private final MainFeed mainFeed;
+    private final NewReleases newReleases;
+    private final Episodes episodes;
 
     @PostMapping(path = "/subscriptions/subscribe")
     public String postSubscribe(@RequestHeader("Referer") String referer, @RequestParam("podcastId") Long podcastId) {
@@ -24,13 +25,13 @@ public class SubscriptionsController {
 
     @PostMapping(path = "/subscriptions/not-interested/{episodeId}")
     public ResponseEntity postNotInterested(@PathVariable("episodeId") String episodeId) {
-        mainFeed.notInterested(episodeId);
+        episodes.notInterested(episodeId);
         return ResponseEntity.accepted().build();
     }
 
     @PostMapping(path = "/subscriptions/interested/{episodeId}")
     public ResponseEntity postInterested(@PathVariable("episodeId") String episodeId) {
-        mainFeed.interested(episodeId);
+        episodes.interested(episodeId);
         return ResponseEntity.accepted().build();
     }
 

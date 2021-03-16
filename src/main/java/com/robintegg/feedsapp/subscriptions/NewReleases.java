@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class MainFeed {
+public class NewReleases {
 
     private final PodcastRepository podcastRepository;
     private final SubscriptionRepository subscriptionRepository;
@@ -31,28 +31,6 @@ public class MainFeed {
         }
         list.sort(Episode::ORDER_BY_MOST_RECENT);
         return list;
-
-    }
-
-    public void notInterested(String episodeId) {
-
-        Subscription subscription = subscriptionRepository
-                .findBySubscriptionEpisodesEpisodeId(episodeId).orElseThrow();
-
-        subscription.notInterested(episodeId);
-
-        subscriptionRepository.save(subscription);
-
-    }
-
-    public void interested(String episodeId) {
-
-        Subscription subscription = subscriptionRepository
-                .findBySubscriptionEpisodesEpisodeId(episodeId).orElseThrow();
-
-        subscription.interested(episodeId);
-
-        subscriptionRepository.save(subscription);
 
     }
 
