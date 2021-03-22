@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Podcasts</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}">
-</head>
+<head th:replace="fragments/doc/head :: main-head('Podcasts')" />
 <body>
 
 <!-- scripts -->
-<th:block th:replace="fragments/scripts/navbar :: main-navigation" />
+<th:block th:replace="fragments/nav/navbar :: main-navigation" />
 
 <section class="hero is-primary">
     <div class="hero-body">
@@ -100,7 +94,7 @@
 </section>
 
 <!-- scripts -->
-<th:block th:replace="fragments/scripts/navbar :: burger-toggle" />
+<th:block th:replace="fragments/nav/navbar :: burger-toggle" />
 
 </body>
 </html>
