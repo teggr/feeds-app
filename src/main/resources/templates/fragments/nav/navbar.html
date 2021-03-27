@@ -37,7 +37,7 @@
 </nav>
 
 <script th:fragment="burger-toggle" type="application/javascript">
-    document.addEventListener('turbo:load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
 
         // Get all "navbar-burger" elements
         const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
