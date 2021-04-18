@@ -43,11 +43,10 @@
 
 </section>
 
-<!-- scripts -->
-<th:block th:replace="fragments/nav/navbar :: burger-toggle" />
+<th:block th:replace="fragments/media/player :: audio-player" />
 
 <script type="application/javascript">
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('turbo:load', () => {
 
         // Get all "not-interested" elements
         const $notInterested = Array.prototype.slice.call(document.querySelectorAll('.not-interested'), 0);
