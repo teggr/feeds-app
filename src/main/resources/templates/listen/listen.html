@@ -15,7 +15,7 @@
 
         <audio id="my-audio" controls class="is-hidden">
             <source th:src="${audioUrl}"
-                    type="audio/mpeg">
+                    th:type="${audioType}">
             Your browser does not support the audio tag.
             <!-- place fallback here as <audio> supporting browsers will ignore it -->
             <p>Download<a th:href="${audioUrl}">audiofile.mp3</a></p>
@@ -49,163 +49,163 @@
 
 <script type="application/javascript">
 
-    window.onload = function(){
+    document.addEventListener("DOMContentLoaded", function(event) {
 
-    var myAudio = document.getElementById('my-audio');
-   var play = document.getElementById('play');
-   var pause = document.getElementById('pause');
-   var loading = document.getElementById('loading');
-    var progress = document.getElementById('progress');
-  var changeTrack = document.getElementById('toggleTrack');
-  var duration = document.getElementById('duration');
+        var myAudio = document.getElementById('my-audio');
+        var play = document.getElementById('play');
+        var pause = document.getElementById('pause');
+        var loading = document.getElementById('loading');
+        var progress = document.getElementById('progress');
+        var changeTrack = document.getElementById('toggleTrack');
+        var duration = document.getElementById('duration');
 
-<!--  changeTrack.addEventListener('click', function() {-->
-<!--      myAudio.pause();-->
-<!--      progress.value = 0;-->
-<!--      progress.textContent = "0%";-->
-<!--      clock.textContent = "00:00:00";-->
-<!--      pause.classList.add('is-hidden');-->
-<!--      play.classList.remove('is-hidden');-->
-<!--      myAudio.src = "https://s3.eu-central-1.amazonaws.com/airhacks.fm/airhacksfm_132.mp3";-->
-<!--   });-->
+        //  changeTrack.addEventListener('click', function() {
+        //      myAudio.pause();
+        //      progress.value = 0;
+        //      progress.textContent = "0%";
+        //      clock.textContent = "00:00:00";
+        //      pause.classList.add('is-hidden');
+        //      play.classList.remove('is-hidden');
+        //      myAudio.src = "https://s3.eu-central-1.amazonaws.com/airhacks.fm/airhacksfm_132.mp3";
+        //   });
 
-progress.addEventListener('click', function(e) {
+        progress.addEventListener('click', function(e) {
 
-  // calculate the normalized position clicked
-  var clickPosition = (e.pageX  - this.offsetLeft) / this.offsetWidth;
-  var clickTime = clickPosition * myAudio.duration;
+          // calculate the normalized position clicked
+          var clickPosition = (e.pageX  - this.offsetLeft) / this.offsetWidth;
+          var clickTime = clickPosition * myAudio.duration;
 
-  // move the playhead to the correct position
-  myAudio.currentTime = clickTime;
-});
+          // move the playhead to the correct position
+          myAudio.currentTime = clickTime;
+        });
 
-   function displayControls() {
-        loading.classList.toggle('is-hidden');
-      play.classList.toggle('is-hidden');
-   }
+           function displayControls() {
+                loading.classList.toggle('is-hidden');
+              play.classList.toggle('is-hidden');
+           }
 
-   // check that the media is ready before displaying the controls
-   if (myAudio.paused) {
-      displayControls();
-   } else {
-      // not ready yet - wait for canplay event
-      myAudio.addEventListener('canplay', function() {
-         displayControls();
-      });
-   }
+           // check that the media is ready before displaying the controls
+           if (myAudio.paused) {
+              displayControls();
+           } else {
+              // not ready yet - wait for canplay event
+              myAudio.addEventListener('canplay', function() {
+                 displayControls();
+              });
+           }
 
-   play.addEventListener('click', function() {
-      myAudio.play();
-      play.classList.toggle('is-hidden');
-      pause.classList.toggle('is-hidden');
-   });
+           play.addEventListener('click', function() {
+              myAudio.play();
+              play.classList.toggle('is-hidden');
+              pause.classList.toggle('is-hidden');
+           });
 
-   pause.addEventListener('click', function() {
-      myAudio.pause();
-      pause.classList.toggle('is-hidden');
-      play.classList.toggle('is-hidden');
-   });
+           pause.addEventListener('click', function() {
+              myAudio.pause();
+              pause.classList.toggle('is-hidden');
+              play.classList.toggle('is-hidden');
+           });
 
-   // display progress
+           // display progress
 
-   myAudio.addEventListener('timeupdate', function() {
-      //sets the percentage
-      progress.value = parseInt(((myAudio.currentTime / myAudio.duration) * 100), 10)
-      progress.textContent = progress.value + "%";
-      clock.textContent = new Date(myAudio.currentTime * 1000).toISOString().substr(11, 8);;
-   });
+           myAudio.addEventListener('timeupdate', function() {
+              //sets the percentage
+              progress.value = parseInt(((myAudio.currentTime / myAudio.duration) * 100), 10)
+              progress.textContent = progress.value + "%";
+              clock.textContent = new Date(myAudio.currentTime * 1000).toISOString().substr(11, 8);;
+           });
 
-  myAudio.addEventListener("loadstart", function() {
-  //grabbing the file
-    console.log('loading start');
-});
+          myAudio.addEventListener("loadstart", function() {
+          //grabbing the file
+            console.log('loading start');
+        });
 
-  myAudio.addEventListener("durationchange", function(e) {
-  //you can display the duration now
-    console.log('duration change');
-    duration.textContent = new Date(myAudio.duration * 1000).toISOString().substr(11, 8);
-});
+          myAudio.addEventListener("durationchange", function(e) {
+          //you can display the duration now
+            console.log('duration change');
+            duration.textContent = new Date(myAudio.duration * 1000).toISOString().substr(11, 8);
+        });
 
-  myAudio.addEventListener("loadedmetadata", function() {
-  //you can display the duration now
-    console.log('loaded metadata');
-});
+          myAudio.addEventListener("loadedmetadata", function() {
+          //you can display the duration now
+            console.log('loaded metadata');
+        });
 
-  myAudio.addEventListener("loadeddata", function() {
-  //you could display the playhead now
-    console.log('loaded data');
-});
+          myAudio.addEventListener("loadeddata", function() {
+          //you could display the playhead now
+            console.log('loaded data');
+        });
 
-  myAudio.addEventListener("progress", function() {
-  // you could let the user know the media is downloading
-    console.log('progress');
-});
+          myAudio.addEventListener("progress", function() {
+          // you could let the user know the media is downloading
+            console.log('progress');
+        });
 
-  myAudio.addEventListener("canplay", function() {
-  //audio is ready to play
-    console.log('can play');
-});
+          myAudio.addEventListener("canplay", function() {
+          //audio is ready to play
+            console.log('can play');
+        });
 
-  myAudio.addEventListener("canplaythrough", function() {
-  //audio is ready to play all the way through
-    console.log('can play through');
-});
+          myAudio.addEventListener("canplaythrough", function() {
+          //audio is ready to play all the way through
+            console.log('can play through');
+        });
 
-   myAudio.addEventListener("suspend", function() {
-  //audio is ready to play all the way through
-    console.log('suspend');
-});
+           myAudio.addEventListener("suspend", function() {
+          //audio is ready to play all the way through
+            console.log('suspend');
+        });
 
-   myAudio.addEventListener("abort", function() {
-  //audio is ready to play all the way through
-    console.log('abort');
-});
+           myAudio.addEventListener("abort", function() {
+          //audio is ready to play all the way through
+            console.log('abort');
+        });
 
-   myAudio.addEventListener("error", function() {
-  //audio is ready to play all the way through
-    console.log('error');
-});
+           myAudio.addEventListener("error", function() {
+          //audio is ready to play all the way through
+            console.log('error');
+        });
 
-   myAudio.addEventListener("emptied", function() {
-  //audio is ready to play all the way through
-    console.log('emptied');
-});
+           myAudio.addEventListener("emptied", function() {
+          //audio is ready to play all the way through
+            console.log('emptied');
+        });
 
-   myAudio.addEventListener("stalled", function() {
-  //audio is ready to play all the way through
-    console.log('stalled');
-});
-   myAudio.addEventListener("timeupdate", function() {
-  //update something related to playback progress
-     console.log('time update');
-});
+           myAudio.addEventListener("stalled", function() {
+          //audio is ready to play all the way through
+            console.log('stalled');
+        });
+           myAudio.addEventListener("timeupdate", function() {
+          //update something related to playback progress
+             console.log('time update');
+        });
 
-  myAudio.addEventListener("playing", function() {
-  //update something related to playback progress
-     console.log('playing');
-});
+          myAudio.addEventListener("playing", function() {
+          //update something related to playback progress
+             console.log('playing');
+        });
 
-  myAudio.addEventListener("waiting", function() {
-  //update something related to playback progress
-     console.log('waiting');
-});
+          myAudio.addEventListener("waiting", function() {
+          //update something related to playback progress
+             console.log('waiting');
+        });
 
-  myAudio.addEventListener("play", function() {
-  //update something related to playback progress
-     console.log('play');
-});
+          myAudio.addEventListener("play", function() {
+          //update something related to playback progress
+             console.log('play');
+        });
 
-  myAudio.addEventListener("pause", function() {
-  //update something related to playback progress
-     console.log('pause');
-});
+          myAudio.addEventListener("pause", function() {
+          //update something related to playback progress
+             console.log('pause');
+        });
 
-  myAudio.addEventListener("ended", function() {
-  //update something related to playback progress
-     console.log('ended');
-});
+          myAudio.addEventListener("ended", function() {
+          //update something related to playback progress
+             console.log('ended');
+        });
 
-}
+    });
 
     </script>
 

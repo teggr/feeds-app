@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="main-head(title)">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>[(${title})]</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="apple-touch-icon" th:href="@{/images/apple-touch-icon.png}">
 
-    <script type="module" src="https://cdn.skypack.dev/pin/@hotwired/turbo@v7.0.0-beta.5-LhgiwOUjafYu3bb8VbTv/mode=imports,min/optimized/@hotwired/turbo.js"></script>
+   <!-- <script type="module" src="https://cdn.skypack.dev/pin/@hotwired/turbo@v7.0.0-beta.5-LhgiwOUjafYu3bb8VbTv/mode=imports,min/optimized/@hotwired/turbo.js"></script> -->
     <script src="https://kit.fontawesome.com/59c238cb06.js" crossorigin="anonymous"></script>
 
     <th:block th:replace="fragments/nav/navbar :: burger-toggle"></th:block>

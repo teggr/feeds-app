@@ -45,10 +45,9 @@
                     <h5 th:text="${episode.title}" class="title is-5"></h5>
                     <p th:text="${#temporals.format(episode.publishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
                     <div>
-                        <audio controls>
-                            <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
-                            Your browser does not support the audio tag.
-                        </audio>
+                        <div class="level-item">
+                            <a class="button" th:href="@{/listen(audioUrl=${#uris.escapePath(episode.audio.url)},audioType=${episode.audio.type})}">Play</a>
+                        </div>
                     </div>
                     <div class="block"></div>
                     <div th:if="${episode.hasEpisodeLink()}">

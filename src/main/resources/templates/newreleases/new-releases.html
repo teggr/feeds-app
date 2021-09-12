@@ -31,10 +31,9 @@
                                     <button class="button is-danger is-outlined not-interested" th:data-episode-id="${episode.id}">Not Interested</button>
                                 </div>
                                 <div class="level-item">
-                                    <audio controls>
-                                        <source th:src="${episode.audio.url}" th:type="${episode.audio.type}">
-                                        Your browser does not support the audio tag.
-                                    </audio>
+                                    <div class="level-item">
+                                        <a class="button" th:href="@{/listen(audioUrl=${#uris.escapePath(episode.audio.url)},audioType=${episode.audio.type})}">Play</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +48,8 @@
 <!-- scripts -->
 
 <script type="application/javascript">
-    document.addEventListener('turbo:load', () => {
+
+    document.addEventListener("DOMContentLoaded", function(event) {
 
         // Get all "not-interested" elements
         const $notInterested = Array.prototype.slice.call(document.querySelectorAll('.not-interested'), 0);
@@ -118,6 +118,7 @@
         }
 
     });
+
 </script>
 
 </body>
