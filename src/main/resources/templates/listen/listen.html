@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <script src="https://kit.fontawesome.com/59c238cb06.js" crossorigin="anonymous"></script>
-</head>
+<head th:replace="fragments/doc/head :: main-head('Listen')" />
 <body>
 
+<!-- scripts -->
+<th:block th:replace="fragments/nav/navbar :: main-navigation" />
 
-<nav id="audio-player" class="navbar is-fixed-bottom" data-turbo-permanent th:fragment="audio-player">
+<section class="section">
+    <h1 class="title">Listen</h1>
 
-    <audio id="my-audio" controls class="is-hidden">
-        <source src="https://traffic.libsyn.com/secure/legacycoderocks/Freshli_MASTER.mp3?dest-id=383642"
-                type="audio/mpeg">
-        Your browser does not support the audio tag.
-        <!-- place fallback here as <audio> supporting browsers will ignore it -->
-        <p>Download<a href="audiofile.mp3">audiofile.mp3</a></p>
-    </audio>
+    <a class="button" th:href="${navigateBackUrl}">Back</a>
 
-    <progress id="progress" class="progress is-small" value="0" max="100"></progress>
-    <div id="controls">
+    <div id="audio-player">
 
-        <button id="play" class="button is-hidden">
+        <audio id="my-audio" controls class="is-hidden">
+            <source th:src="${audioUrl}"
+                    type="audio/mpeg">
+            Your browser does not support the audio tag.
+            <!-- place fallback here as <audio> supporting browsers will ignore it -->
+            <p>Download<a th:href="${audioUrl}">audiofile.mp3</a></p>
+        </audio>
+
+        <progress id="progress" class="progress is-small" value="0" max="100"></progress>
+        <div id="controls">
+
+            <button id="play" class="button is-hidden">
             <span class="icon">
                 <i class="fas fa-play"></i>
             </span>
-        </button>
-        <button id="pause" class="button is-hidden">
+            </button>
+            <button id="pause" class="button is-hidden">
             <span class="icon">
                 <i class="fas fa-pause"></i>
             </span>
-        </button>
-        <button id="toggleTrack" class="button" name="play-next">
+            </button>
+           <!-- <button id="toggleTrack" class="button" name="play-next">
             <span class="icon">
                 <i class="fas fa-step-forward"></i>
             </span>
-        </button>
-        <span id="loading">loading</span>
-        <span id="clock">00:00:00</span>/<span id="duration">00:00:00</span>
+            </button>-->
+            <span id="loading">loading</span>
+            <span id="clock">00:00:00</span>/<span id="duration">00:00:00</span>
+        </div>
+
     </div>
 
-    <script>
-        window.onload = function(){
+</section>
+
+<script type="application/javascript">
+
+    window.onload = function(){
 
     var myAudio = document.getElementById('my-audio');
    var play = document.getElementById('play');
@@ -50,15 +59,15 @@
   var changeTrack = document.getElementById('toggleTrack');
   var duration = document.getElementById('duration');
 
-  changeTrack.addEventListener('click', function() {
-      myAudio.pause();
-      progress.value = 0;
-      progress.textContent = "0%";
-      clock.textContent = "00:00:00";
-      pause.classList.add('is-hidden');
-      play.classList.remove('is-hidden');
-      myAudio.src = "https://s3.eu-central-1.amazonaws.com/airhacks.fm/airhacksfm_132.mp3";
-   });
+<!--  changeTrack.addEventListener('click', function() {-->
+<!--      myAudio.pause();-->
+<!--      progress.value = 0;-->
+<!--      progress.textContent = "0%";-->
+<!--      clock.textContent = "00:00:00";-->
+<!--      pause.classList.add('is-hidden');-->
+<!--      play.classList.remove('is-hidden');-->
+<!--      myAudio.src = "https://s3.eu-central-1.amazonaws.com/airhacks.fm/airhacksfm_132.mp3";-->
+<!--   });-->
 
 progress.addEventListener('click', function(e) {
 
@@ -199,8 +208,6 @@ progress.addEventListener('click', function(e) {
 }
 
     </script>
-
-</nav>
 
 </body>
 </html>

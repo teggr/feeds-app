@@ -21,6 +21,9 @@ Home
 * list of episodes interested in
 * not interested
 
+Listen
+* media player for list of interested episodes
+
 New Releases
 * see latest episodes
 * interested / not interested
@@ -35,9 +38,3 @@ Podcasts
 * refresh podcasts
 * subscribe to podcasts
 
-Media player
-* attach player to each episode
-
-## Architecture
-
-Podcasts - 
