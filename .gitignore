@@ -28,3 +28,12 @@ target
 # intellij
 .idea
 *.iml
+
+# eclipse
+.project
+.classpath
+.settings
+.factorypath
+
+# vscode
+.vscode

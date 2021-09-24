@@ -33,4 +33,8 @@ public class ListeningFeed {
 
     }
 
+	public Episode getEpisode(String episodeId) {
+		return fetch().stream().filter( e -> e.getId().equals(episodeId) ).findFirst().get();
+	}
+
 }

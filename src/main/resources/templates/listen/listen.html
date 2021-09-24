@@ -1,50 +1,68 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/doc/head :: main-head('Listen')" />
+<head th:replace="fragments/doc/head :: main-head('Listen')" >
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/59c238cb06.js" crossorigin="anonymous"></script>   
+</head>
 <body>
 
 <!-- scripts -->
 <th:block th:replace="fragments/nav/navbar :: main-navigation" />
 
 <section class="section">
+
     <h1 class="title">Listen</h1>
-
-    <a class="button" th:href="${navigateBackUrl}">Back</a>
-
+   
     <div id="audio-player">
 
+		<figure class="image is-128x128">
+			<img th:src="${episode.image.url}" src="https://bulma.io/images/placeholders/128x128.png">
+		</figure>
+
         <audio id="my-audio" controls class="is-hidden">
-            <source th:src="${audioUrl}"
-                    th:type="${audioType}">
+            <source th:src="${episode.audio.url}" src="https://traffic.megaphone.fm/SED3513321205.mp3"
+                    th:type="${episode.audio.type}" type="audio/mpeg">
             Your browser does not support the audio tag.
             <!-- place fallback here as <audio> supporting browsers will ignore it -->
-            <p>Download<a th:href="${audioUrl}">audiofile.mp3</a></p>
+            <p><a th:href="${episode.audio.url}" href="https://traffic.megaphone.fm/SED3513321205.mp3">Download</a></p>
         </audio>
 
         <progress id="progress" class="progress is-small" value="0" max="100"></progress>
-        <div id="controls">
 
-            <button id="play" class="button is-hidden">
-            <span class="icon">
-                <i class="fas fa-play"></i>
-            </span>
-            </button>
-            <button id="pause" class="button is-hidden">
-            <span class="icon">
-                <i class="fas fa-pause"></i>
-            </span>
-            </button>
-           <!-- <button id="toggleTrack" class="button" name="play-next">
-            <span class="icon">
-                <i class="fas fa-step-forward"></i>
-            </span>
-            </button>-->
-            <span id="loading">loading</span>
-            <span id="clock">00:00:00</span>/<span id="duration">00:00:00</span>
+        <span id="loading">loading</span>
+        <span id="clock">00:00:00</span>/<span id="duration">00:00:00</span>
+        
+        <div id="controls">
+        
+			<button id="rewind" class="button is-hidden">
+				<span class="icon">
+					<i class="fas fa-backward"></i>
+				</span>
+			</button>
+			
+			<button id="play" class="button is-hidden">
+				<span class="icon">
+					<i class="fas fa-play"></i>
+				</span>
+			</button>
+			<button id="pause" class="button is-hidden">
+				<span class="icon">
+					<i class="fas fa-pause"></i>
+				</span>
+			</button>
+			
+			<button id="fast-forward" class="button is-hidden">
+				<span class="icon">
+					<i class="fas fa-forward"></i>
+				</span>
+			</button>
+           
         </div>
 
     </div>
 
+    <a class="button" th:href="${navigateBackUrl}">Back</a>
+    
 </section>
 
 <script type="application/javascript">
@@ -54,6 +72,8 @@
         var myAudio = document.getElementById('my-audio');
         var play = document.getElementById('play');
         var pause = document.getElementById('pause');
+        var fastForward = document.getElementById('fast-forward');
+        var rewind = document.getElementById('rewind');
         var loading = document.getElementById('loading');
         var progress = document.getElementById('progress');
         var changeTrack = document.getElementById('toggleTrack');
@@ -81,7 +101,9 @@
 
            function displayControls() {
                 loading.classList.toggle('is-hidden');
-              play.classList.toggle('is-hidden');
+              	play.classList.toggle('is-hidden');
+              	//fastForward.classList.toggle('is-hidden');
+              	//rewind.classList.toggle('is-hidden');
            }
 
            // check that the media is ready before displaying the controls
@@ -97,6 +119,8 @@
            play.addEventListener('click', function() {
               myAudio.play();
               play.classList.toggle('is-hidden');
+               fastForward.classList.toggle('is-hidden');
+                rewind.classList.toggle('is-hidden');
               pause.classList.toggle('is-hidden');
            });
 
@@ -104,6 +128,18 @@
               myAudio.pause();
               pause.classList.toggle('is-hidden');
               play.classList.toggle('is-hidden');
+              fastForward.classList.toggle('is-hidden');
+                rewind.classList.toggle('is-hidden');
+           });
+           
+           fastForward.addEventListener('click', function() {
+	          // move the playhead to the correct position
+	          myAudio.currentTime = myAudio.currentTime + 30;
+           });
+           
+           rewind.addEventListener('click', function() {
+	          // move the playhead to the correct position
+	          myAudio.currentTime = clickTime - 30;
            });
 
            // display progress

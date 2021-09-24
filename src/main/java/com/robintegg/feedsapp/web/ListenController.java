@@ -22,19 +22,17 @@ public class ListenController {
     @GetMapping("/listen")
     public String get(
             @RequestHeader(value = HttpHeaders.REFERER, required = false) String refererUrl,
-            @RequestParam(value = "audioUrl", required = false) String audioUrl,
-            @RequestParam(value = "audioType", required = false) String audioType,
+            @RequestParam(value = "episodeId", required = false) String episodeId,
             Model model,
             HttpServletResponse response
     ) {
 
-        log.info("audioUrl={},audioType={},refererUrl={}", audioUrl, audioType, refererUrl);
+        log.info("episodeId={},refererUrl={}", episodeId, refererUrl);
 
-        model.addAttribute("audioUrl", audioUrl);
-        model.addAttribute("audioType", audioType);
+        model.addAttribute("episode", listeningFeed.getEpisode(episodeId) );
         model.addAttribute("navigateBackUrl", refererUrl);
 
-        response.addHeader("Cache-Control", "no-cache");
+        // response.addHeader("Cache-Control", "no-cache");
 
         return "listen/listen";
 

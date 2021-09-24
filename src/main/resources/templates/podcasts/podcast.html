@@ -46,7 +46,7 @@
                     <p th:text="${#temporals.format(episode.publishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
                     <div>
                         <div class="level-item">
-                            <a class="button" th:href="@{/listen(audioUrl=${#uris.escapePath(episode.audio.url)},audioType=${episode.audio.type})}">Play</a>
+                            <a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
                         </div>
                     </div>
                     <div class="block"></div>

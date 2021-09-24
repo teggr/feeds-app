@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="level-item">
                                     <div class="level-item">
-                                        <a class="button" th:href="@{/listen(audioUrl=${#uris.escapePath(episode.audio.url)},audioType=${episode.audio.type})}">Play</a>
+                                        <a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
                                     </div>
                                 </div>
                             </div>
