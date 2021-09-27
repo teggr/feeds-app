@@ -1,8 +1,7 @@
 package com.robintegg.feedsapp.web;
 
-import com.robintegg.feedsapp.subscriptions.ListeningFeed;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,14 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
+import com.robintegg.feedsapp.playlist.Playlists;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
 public class ListenController {
 
-    private final ListeningFeed listeningFeed;
+    private final Playlists playlist;
 
     @GetMapping("/listen")
     public String get(
@@ -29,7 +31,7 @@ public class ListenController {
 
         log.info("episodeId={},refererUrl={}", episodeId, refererUrl);
 
-        model.addAttribute("episode", listeningFeed.getEpisode(episodeId) );
+        model.addAttribute("episode", playlist.getCurrent(episodeId) );
         model.addAttribute("navigateBackUrl", refererUrl);
 
         // response.addHeader("Cache-Control", "no-cache");
