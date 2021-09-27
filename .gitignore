@@ -37,3 +37,5 @@ target
 
 # vscode
 .vscode
+.classpath
+.factorypath
