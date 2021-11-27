@@ -19,95 +19,94 @@ import java.util.stream.Collectors;
 @Getter
 public class Podcast {
 
-    public static Podcast forUrl(URL feedUrl) {
-        Podcast podcast = new Podcast();
-        podcast.feedUrl = feedUrl;
-        return podcast;
-    }
+	public static Podcast forUrl(URL feedUrl) {
+		Podcast podcast = new Podcast();
+		podcast.feedUrl = feedUrl;
+		return podcast;
+	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
-    @Column(name = "feed_url")
-    private URL feedUrl;
+	@Column(name = "feed_url")
+	private URL feedUrl;
 
-    @Lob
-    @Column(name = "feed_data")
-    private String feedData;
+	@Lob
+	@Column(name = "feed_data")
+	private String feedData;
 
-    @Column(name = "last_fetched")
-    private ZonedDateTime lastFetched;
+	@Column(name = "last_fetched")
+	private ZonedDateTime lastFetched;
 
-    // feed derived values
-    @Column(name = "feed_title")
-    private String feedTitle;
+	// feed derived values
+	@Column(name = "feed_title")
+	private String feedTitle;
 
-    @Column(name = "feed_link_url")
-    private URL feedLinkUrl;
+	@Column(name = "feed_link_url")
+	private URL feedLinkUrl;
 
-    @Column(name = "feed_image_url")
-    private URL feedImageUrl;
+	@Column(name = "feed_image_url")
+	private URL feedImageUrl;
 
-    @Column(name = "feed_image_title")
-    private String feedImageTitle;
+	@Column(name = "feed_image_title")
+	private String feedImageTitle;
 
-    protected Podcast() {
-    } // for persistence
+	protected Podcast() {
+	} // for persistence
 
-    public List<Episode> getMostRecentEpisodes(int maxEpisodes) {
+	public List<Episode> getMostRecentEpisodes(int maxEpisodes) {
 
-        if (feedData == null) {
-            return Collections.emptyList();
-        }
+		if (feedData == null) {
+			return Collections.emptyList();
+		}
 
-        return EpisodeFactory.get(feedData).stream()
-                .sorted(Episode::ORDER_BY_MOST_RECENT)
-                .limit(maxEpisodes)
-                .collect(Collectors.toList());
+		return EpisodeFactory.get(feedData).stream().sorted(Episode::ORDER_BY_MOST_RECENT).limit(maxEpisodes)
+				.collect(Collectors.toList());
 
-    }
+	}
 
-    @SneakyThrows
-    public void fetch() {
+	@SneakyThrows
+	public Collection<Episode> fetch() {
 
-        feedData = StreamUtils.copyToString(feedUrl.openStream(), StandardCharsets.UTF_8);
+		feedData = StreamUtils.copyToString(feedUrl.openStream(), StandardCharsets.UTF_8);
 
-        // update podcast information
-        PodcastInfo podcastInfo = PodcastInfoFactory.from(feedData);
+		// update podcast information
+		PodcastInfo podcastInfo = PodcastInfoFactory.from(feedData);
 
-        feedTitle = podcastInfo.getTitle();
-        feedLinkUrl = podcastInfo.getLinkUrl();
-        feedImageUrl = podcastInfo.getImage().getUrl();
-        feedImageTitle = podcastInfo.getImage().getTitle();
+		feedTitle = podcastInfo.getTitle();
+		feedLinkUrl = podcastInfo.getLinkUrl();
+		feedImageUrl = podcastInfo.getImage().getUrl();
+		feedImageTitle = podcastInfo.getImage().getTitle();
 
-        lastFetched = ZonedDateTime.now();
+		Collection<Episode> newEpisodes = getEpisodesSince(lastFetched == null ? ZonedDateTime.now() : lastFetched);
 
-    }
+		lastFetched = ZonedDateTime.now();
 
-    public Collection<Episode> getEpisodesSince(ZonedDateTime dateTime) {
+		return newEpisodes;
 
-        if (feedData == null) {
-            return Collections.emptyList();
-        }
+	}
 
-        return EpisodeFactory.get(feedData).stream()
-                .filter(e -> e.isPublishedSince(dateTime))
-                .collect(Collectors.toList());
+	public Collection<Episode> getEpisodesSince(ZonedDateTime dateTime) {
 
-    }
+		if (feedData == null) {
+			return Collections.emptyList();
+		}
 
-    public Collection<Episode> getEpisodes(Set<String> ids) {
+		return EpisodeFactory.get(feedData).stream().filter(e -> e.isPublishedSince(dateTime))
+				.collect(Collectors.toList());
 
-        if (feedData == null) {
-            return Collections.emptyList();
-        }
+	}
 
-        return EpisodeFactory.get(feedData).stream()
-                .filter(e -> ids.contains(e.getId()))
-                .collect(Collectors.toList());
+	public Collection<Episode> getEpisodes(Set<String> ids) {
 
-    }
+		if (feedData == null) {
+			return Collections.emptyList();
+		}
+
+		return EpisodeFactory.get(feedData).stream().filter(e -> ids.contains(e.getId())).collect(Collectors.toList());
+
+	}
 
 }

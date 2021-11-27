@@ -14,8 +14,12 @@ class PodcastFetchScheduler {
 
     @Scheduled(cron = "0 0 * * * *")
     public void fetchPodcasts() {
+    	
+    	log.info("Starting podcast fetch");
 
         podcastFetchService.fetchAllIgnoringErrors();
+        
+        log.info("Completed podcast fetch");
 
     }
 
