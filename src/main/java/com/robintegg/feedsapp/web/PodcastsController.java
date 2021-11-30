@@ -1,11 +1,7 @@
 package com.robintegg.feedsapp.web;
 
-import com.robintegg.feedsapp.podcasts.Podcast;
-import com.robintegg.feedsapp.podcasts.PodcastFetchService;
-import com.robintegg.feedsapp.podcasts.PodcastRepository;
-import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
-import com.robintegg.feedsapp.subscriptions.Subscription;
-import lombok.RequiredArgsConstructor;
+import java.net.URL;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +9,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URL;
+import com.robintegg.feedsapp.podcasts.Podcast;
+import com.robintegg.feedsapp.podcasts.PodcastUpdateCollector;
+import com.robintegg.feedsapp.podcasts.PodcastRepository;
+import com.robintegg.feedsapp.podcasts.PodcastsService;
+import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
+import com.robintegg.feedsapp.subscriptions.Subscription;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class PodcastsController {
 
-    private final PodcastRepository podcastRepository;
-    private final PodcastFetchService podcastFetchService;
+	private final PodcastRepository podcastRepository;
+    private final PodcastsService podcastsService;
+    private final PodcastUpdateCollector podcastFetchService;
     private final PodcastSubscriptions podcastSubscriptions;
 
     @GetMapping("/podcasts")
@@ -33,14 +37,13 @@ public class PodcastsController {
 
     @PostMapping(path="/podcasts",params = "add")
     public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
-        Podcast podcast = Podcast.forUrl(feedUrl);
-        podcastRepository.save(podcast);
+    	podcastsService.addPodcastWithUrl(feedUrl);
         return "redirect:/";
     }
 
     @PostMapping(path="/podcasts",params = "refresh")
     public String postRefreshAll() {
-        podcastFetchService.fetchAllIgnoringErrors();
+        podcastFetchService.collect();
         return "redirect:/";
     }
 

@@ -1,6 +1,5 @@
 package com.robintegg.feedsapp.podcasts;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,15 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PodcastFetchService {
+public class PodcastUpdateCollector {
 
+	private final PodcastDataService podcastDataService;
 	private final PodcastRepository podcastRepository;
 	private final ApplicationEventPublisher applicationEventPublisher;
 
 	@Transactional(readOnly = false)
-	public void fetchAllIgnoringErrors() {
+	public void collect() {
 
-		log.info("starting to fetch podcasts, ignoring errors");
+		log.info("starting to collect podcast updates");
 
 		List<PodcastUpdateEvent> fetchAllResults = podcastRepository.findAll().stream().map(this::fetchIgnoreErrors)
 				.collect(Collectors.toList());
@@ -42,9 +42,14 @@ public class PodcastFetchService {
 	private PodcastUpdateEvent fetchIgnoreErrors(Podcast podcast) {
 		try {
 			log.info("starting to fetch podcast {} {}", podcast.getId(), podcast.getFeedUrl());
-			Collection<Episode> newEpisodes = podcast.fetch();
+
+			PodcastLatest podcastLatest = podcastDataService.getPodcastLatest(podcast.getFeedUrl(),
+					podcast.getLastFetched());
+
+			podcast.onFetch(podcastLatest);
+
 			podcastRepository.save(podcast);
-			PodcastUpdateEvent event = new PodcastUpdateEvent(this, podcast, newEpisodes);
+			PodcastUpdateEvent event = new PodcastUpdateEvent(this, podcast, podcastLatest.getEpisodes());
 			applicationEventPublisher.publishEvent(event);
 			return event;
 		} catch (Exception e) {
@@ -57,7 +62,12 @@ public class PodcastFetchService {
 	public void fetch(Long id) {
 
 		Podcast podcast = podcastRepository.findById(id).orElseThrow();
-		podcast.fetch();
+
+		PodcastLatest podcastLatest = podcastDataService.getPodcastLatest(podcast.getFeedUrl(),
+				podcast.getLastFetched());
+
+		podcast.onFetch(podcastLatest);
+
 		podcastRepository.save(podcast);
 
 	}
