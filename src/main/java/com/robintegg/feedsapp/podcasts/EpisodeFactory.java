@@ -31,7 +31,7 @@ class EpisodeFactory {
 
 			String idAsUriHash = DigestUtils.md5DigestAsHex(entry.getUri().getBytes(StandardCharsets.UTF_8));
 
-			log.debug("id={},uri={},title={},link={},published={}", idAsUriHash, entry.getUri(), entry.getTitle(),
+			log.info("id={},uri={},title={},link={},published={}", idAsUriHash, entry.getUri(), entry.getTitle(),
 					entry.getLink(), entry.getPublishedDate());
 
 			if (entry.getPublishedDate() != null) {
