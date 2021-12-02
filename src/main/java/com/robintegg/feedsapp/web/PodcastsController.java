@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.robintegg.feedsapp.podcasts.Podcast;
 import com.robintegg.feedsapp.podcasts.PodcastUpdateCollector;
 import com.robintegg.feedsapp.podcasts.Podcasts;
+import com.robintegg.feedsapp.subscriptions.PodcastSubscription;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
-import com.robintegg.feedsapp.subscriptions.Subscription;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,7 +51,7 @@ public class PodcastsController {
 		model.addAttribute("podcast", podcast);
 		model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
 		// TODO: user related
-		Subscription subscription = podcastSubscriptions.getByPodcast(id);
+		PodcastSubscription subscription = podcastSubscriptions.getByPodcast(id);
 		model.addAttribute("subscribe", subscription == null);
 		model.addAttribute("unsubscribe", subscription != null);
 		model.addAttribute("subscription", subscription);

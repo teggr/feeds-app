@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.robintegg.feedsapp.podcasts.Episode;
-import com.robintegg.feedsapp.subscriptions.ListeningFeed;
 
 import lombok.RequiredArgsConstructor;
 

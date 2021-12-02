@@ -72,4 +72,5 @@ public class PodcastUpdateCollector {
 		podcastRepository.save(podcast);
 
 	}
+
 }

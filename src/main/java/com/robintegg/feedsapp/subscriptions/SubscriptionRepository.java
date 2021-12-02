@@ -1,13 +1,11 @@
 package com.robintegg.feedsapp.subscriptions;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
 
-public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Optional<Subscription> findByPodcastId(Long podcastId);
+interface SubscriptionRepository extends JpaRepository<SubscriptionEntity, Long> {
 
-    Optional<Subscription> findBySubscriptionEpisodesEpisodeId(String episodeId);
+	Optional<SubscriptionEntity> findByPodcastId(Long podcastId);
 
 }
