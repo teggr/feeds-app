@@ -1,6 +1,7 @@
 package com.robintegg.feedsapp.playlist;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -24,11 +25,16 @@ public class NewReleases {
 	public List<Episode> fetch() {
 
 		return subscriptionEpisodesRepository.findAllByStatusIsNull().stream().map(this::toEpisode)
-				.sorted(Episode::ORDER_BY_MOST_RECENT).collect(Collectors.toList());
+				.filter(Objects::nonNull).sorted(Episode::ORDER_BY_MOST_RECENT).collect(Collectors.toList());
 	}
 
 	private Episode toEpisode(PodcastEpisodeEntity se) {
-		return podcasts.getEpisode(se.getEpisodeId());
+		try {
+			return podcasts.getEpisode(se.getEpisodeId());
+		} catch (Exception e) {
+			log.warn("could not load episode");
+			return null;
+		}
 	}
 
 }
