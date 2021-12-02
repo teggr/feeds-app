@@ -1,6 +1,7 @@
 package com.robintegg.feedsapp.web;
 
 import java.net.URL;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import com.robintegg.feedsapp.podcasts.PodcastUpdateCollector;
 import com.robintegg.feedsapp.podcasts.Podcasts;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscription;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
+import com.robintegg.feedsapp.subscriptions.Subscription;
 
 import lombok.RequiredArgsConstructor;
 
@@ -51,7 +53,8 @@ public class PodcastsController {
 		model.addAttribute("podcast", podcast);
 		model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
 		// TODO: user related
-		PodcastSubscription subscription = podcastSubscriptions.getByPodcast(id);
+		Subscription subscription = Optional.ofNullable(podcastSubscriptions.getByPodcast(id))
+				.map(PodcastSubscription::getSubscription).orElse(null);
 		model.addAttribute("subscribe", subscription == null);
 		model.addAttribute("unsubscribe", subscription != null);
 		model.addAttribute("subscription", subscription);
