@@ -68,7 +68,8 @@ public class PodcastUpdateCollector {
 
 		PodcastEntity podcast = podcastRepository.findById(id).orElseThrow();
 
-		log.info("refreshing podcast {}[{}]", podcast.getFeedTitle(), podcast.getFeedUrl());
+		log.info("refreshing podcast {}[{}][{}]", podcast.getFeedTitle(), podcast.getFeedUrl(),
+				podcast.getLastFetched());
 
 		PodcastLatest podcastLatest = podcastDataService.getPodcastLatest(podcast.getFeedUrl(),
 				podcast.getLastFetched());

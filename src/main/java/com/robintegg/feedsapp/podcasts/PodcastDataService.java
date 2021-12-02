@@ -18,16 +18,20 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Responsible for gathering Podcast data and mapping into a standard data model
  *
  */
 @Component
+@Slf4j
 class PodcastDataService {
 
 	@SneakyThrows
 	public PodcastLatest getPodcastLatest(URL feedUrl, ZonedDateTime since) {
+
+		log.info("reading podcast feed {}", feedUrl);
 
 		String feedData = StreamUtils.copyToString(feedUrl.openStream(), StandardCharsets.UTF_8);
 
@@ -38,8 +42,12 @@ class PodcastDataService {
 		String title = feed.getTitle();
 		URL linkUrl = new URL(feed.getLink());
 
+		log.info("read podcast feed for {}", title);
+
 		List<Episode> episodes = EpisodeFactory.get(feed, image).stream().filter(e -> e.isPublishedSince(since))
 				.collect(Collectors.toList());
+
+		log.info("found {} podcast episodes published since {}", episodes.size(), since);
 
 		return PodcastLatest.builder().podcastMetadata(new PodcastMetadata(feedUrl, title, linkUrl, image))
 				.episodes(episodes).build();
