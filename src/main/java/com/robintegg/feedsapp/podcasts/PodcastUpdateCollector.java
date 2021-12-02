@@ -39,7 +39,7 @@ public class PodcastUpdateCollector {
 
 	}
 
-	private PodcastUpdateEvent fetchIgnoreErrors(Podcast podcast) {
+	private PodcastUpdateEvent fetchIgnoreErrors(PodcastEntity podcast) {
 		try {
 			log.info("starting to fetch podcast {} {}", podcast.getId(), podcast.getFeedUrl());
 
@@ -49,19 +49,20 @@ public class PodcastUpdateCollector {
 			podcast.onFetch(podcastLatest);
 
 			podcastRepository.save(podcast);
-			PodcastUpdateEvent event = new PodcastUpdateEvent(this, podcast, podcastLatest.getEpisodes());
+			PodcastUpdateEvent event = new PodcastUpdateEvent(this, Podcast.fromEntity(podcast),
+					podcastLatest.getEpisodes());
 			applicationEventPublisher.publishEvent(event);
 			return event;
 		} catch (Exception e) {
 			log.error("failed to fetch podcast", e);
-			return new PodcastUpdateEvent(this, podcast, Collections.emptyList());
+			return new PodcastUpdateEvent(this, Podcast.fromEntity(podcast), Collections.emptyList());
 		}
 	}
 
 	@Transactional(readOnly = false)
 	public void fetch(Long id) {
 
-		Podcast podcast = podcastRepository.findById(id).orElseThrow();
+		PodcastEntity podcast = podcastRepository.findById(id).orElseThrow();
 
 		PodcastLatest podcastLatest = podcastDataService.getPodcastLatest(podcast.getFeedUrl(),
 				podcast.getLastFetched());

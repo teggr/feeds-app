@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.robintegg.feedsapp.podcasts.Podcast;
 import com.robintegg.feedsapp.podcasts.PodcastUpdateCollector;
-import com.robintegg.feedsapp.podcasts.PodcastRepository;
-import com.robintegg.feedsapp.podcasts.PodcastsService;
+import com.robintegg.feedsapp.podcasts.Podcasts;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
 import com.robintegg.feedsapp.subscriptions.Subscription;
 
@@ -22,55 +21,53 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PodcastsController {
 
-	private final PodcastRepository podcastRepository;
-    private final PodcastsService podcastsService;
-    private final PodcastUpdateCollector podcastFetchService;
-    private final PodcastSubscriptions podcastSubscriptions;
+	private final Podcasts podcasts;
+	private final PodcastUpdateCollector podcastFetchService;
+	private final PodcastSubscriptions podcastSubscriptions;
 
-    @GetMapping("/podcasts")
-    public String get(Model model) {
-        model.addAttribute("podcasts", podcastRepository.findAll());
-        // TODO: user related
-        model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll()));
-        return "podcasts/podcasts";
-    }
+	@GetMapping("/podcasts")
+	public String get(Model model) {
+		model.addAttribute("podcasts", podcasts.getAll());
+		// TODO: user related
+		model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll()));
+		return "podcasts/podcasts";
+	}
 
-    @PostMapping(path="/podcasts",params = "add")
-    public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
-    	podcastsService.addPodcastWithUrl(feedUrl);
-        return "redirect:/";
-    }
+	@PostMapping(path = "/podcasts", params = "add")
+	public String postCreate(@RequestParam("feedUrl") URL feedUrl) {
+		podcasts.addPodcastWithUrl(feedUrl);
+		return "redirect:/";
+	}
 
-    @PostMapping(path="/podcasts",params = "refresh")
-    public String postRefreshAll() {
-        podcastFetchService.collect();
-        return "redirect:/";
-    }
+	@PostMapping(path = "/podcasts", params = "refresh")
+	public String postRefreshAll() {
+		podcastFetchService.collect();
+		return "redirect:/";
+	}
 
-    @GetMapping("/podcasts/{id}")
-    public String get(@PathVariable("id") Long id, Model model) {
-        Podcast podcast = podcastRepository.findById(id)
-                .orElseThrow();
-        model.addAttribute("podcast", podcast);
-        model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
-        // TODO: user related
-        Subscription subscription = podcastSubscriptions.getByPodcast(id);
-        model.addAttribute("subscribe", subscription == null);
-        model.addAttribute("unsubscribe", subscription != null);
-        model.addAttribute("subscription", subscription);
-        return "podcasts/podcast";
-    }
+	@GetMapping("/podcasts/{id}")
+	public String get(@PathVariable("id") Long id, Model model) {
+		Podcast podcast = podcasts.get(id);
+		model.addAttribute("podcast", podcast);
+		model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
+		// TODO: user related
+		Subscription subscription = podcastSubscriptions.getByPodcast(id);
+		model.addAttribute("subscribe", subscription == null);
+		model.addAttribute("unsubscribe", subscription != null);
+		model.addAttribute("subscription", subscription);
+		return "podcasts/podcast";
+	}
 
-    @PostMapping("/podcasts/{id}/delete")
-    public String postDelete(@PathVariable("id") Long id) {
-        podcastRepository.deleteById(id);
-        return "redirect:/";
-    }
+	@PostMapping("/podcasts/{id}/delete")
+	public String postDelete(@PathVariable("id") Long id) {
+		podcasts.removePodcast(id);
+		return "redirect:/";
+	}
 
-    @PostMapping("/podcasts/{id}/refresh")
-    public String postRefresh(@PathVariable("id") Long id) {
-        podcastFetchService.fetch(id);
-        return "redirect:/podcasts/" + id;
-    }
+	@PostMapping("/podcasts/{id}/refresh")
+	public String postRefresh(@PathVariable("id") Long id) {
+		podcastFetchService.fetch(id);
+		return "redirect:/podcasts/" + id;
+	}
 
 }

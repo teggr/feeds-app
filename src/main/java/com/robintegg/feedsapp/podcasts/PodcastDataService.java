@@ -24,7 +24,7 @@ import lombok.SneakyThrows;
  *
  */
 @Component
-public class PodcastDataService {
+class PodcastDataService {
 
 	@SneakyThrows
 	public PodcastLatest getPodcastLatest(URL feedUrl, ZonedDateTime since) {

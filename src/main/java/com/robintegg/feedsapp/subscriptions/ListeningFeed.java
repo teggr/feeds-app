@@ -8,16 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.robintegg.feedsapp.podcasts.Episode;
 import com.robintegg.feedsapp.podcasts.Podcast;
-import com.robintegg.feedsapp.podcasts.PodcastRepository;
+import com.robintegg.feedsapp.podcasts.Podcasts;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
+@Slf4j
 public class ListeningFeed {
 
-	private final PodcastRepository podcastRepository;
+	private final Podcasts podcasts;
 	private final SubscriptionRepository subscriptionRepository;
 
 	public List<Episode> fetch() {
@@ -25,9 +27,13 @@ public class ListeningFeed {
 		List<Episode> list = new ArrayList<>();
 		List<Subscription> subscriptions = subscriptionRepository.findAll();
 		for (Subscription sub : subscriptions) {
-			Podcast podcast = podcastRepository.findById(sub.getPodcastId()).orElse(null);
-			if (podcast != null) {
-				list.addAll(sub.getInterestedEpisodes(podcast));
+			try {
+				Podcast podcast = podcasts.get(sub.getPodcastId());
+				if (podcast != null) {
+					list.addAll(sub.getInterestedEpisodes(podcast));
+				}
+			} catch (Exception e) {
+				log.warn("could not get podcast {}", sub.getPodcastId());
 			}
 		}
 		list.sort(Episode::ORDER_BY_MOST_RECENT);

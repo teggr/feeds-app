@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EpisodeEntity {
+class EpisodeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +54,7 @@ public class EpisodeEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "podcast_id")
-	private Podcast podcast;
+	private PodcastEntity podcast;
 
 	public boolean isPublishedSince(ZonedDateTime dateTime) {
 		return publishedDate.isAfter(dateTime);
