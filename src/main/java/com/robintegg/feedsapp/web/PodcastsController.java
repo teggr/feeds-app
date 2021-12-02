@@ -61,16 +61,16 @@ public class PodcastsController {
 		return "podcasts/podcast";
 	}
 
+	@PostMapping(path = "/podcasts/{id}", params = "refresh")
+	public String postRefresh(@PathVariable("id") Long id) {
+		podcastFetchService.fetch(id);
+		return "redirect:/podcasts/" + id;
+	}
+
 	@PostMapping("/podcasts/{id}/delete")
 	public String postDelete(@PathVariable("id") Long id) {
 		podcasts.removePodcast(id);
 		return "redirect:/";
-	}
-
-	@PostMapping("/podcasts/{id}/refresh")
-	public String postRefresh(@PathVariable("id") Long id) {
-		podcastFetchService.fetch(id);
-		return "redirect:/podcasts/" + id;
 	}
 
 }
