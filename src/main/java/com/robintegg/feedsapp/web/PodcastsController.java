@@ -18,9 +18,11 @@ import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
 import com.robintegg.feedsapp.subscriptions.Subscription;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class PodcastsController {
 
 	private final Podcasts podcasts;
@@ -63,6 +65,7 @@ public class PodcastsController {
 
 	@PostMapping(path = "/podcasts/{id}", params = "refresh")
 	public String postRefresh(@PathVariable("id") Long id) {
+		log.info("refresh podcast {}", id);
 		podcastFetchService.fetch(id);
 		return "redirect:/podcasts/" + id;
 	}

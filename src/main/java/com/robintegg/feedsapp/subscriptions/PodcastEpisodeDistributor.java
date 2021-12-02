@@ -9,9 +9,11 @@ import com.robintegg.feedsapp.playlist.UserInboxes;
 import com.robintegg.feedsapp.podcasts.PodcastUpdateEvent;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PodcastEpisodeDistributor implements ApplicationListener<PodcastUpdateEvent> {
 
 	private final SubscriptionRepository subscriptionRepository;
@@ -20,10 +22,14 @@ public class PodcastEpisodeDistributor implements ApplicationListener<PodcastUpd
 	@Override
 	public void onApplicationEvent(PodcastUpdateEvent event) {
 
+		log.info("new podcast data published for {}", event.getPodcast().getFeedTitle());
+
 		SubscriptionEntity subscriptionEntity = subscriptionRepository.findByPodcastId(event.getPodcast().getId())
 				.orElse(null);
 
 		if (subscriptionEntity != null) {
+
+			log.info("subscription {} for podcast found", subscriptionEntity.getId());
 
 			userInboxes.getUserInbox().put(Subscription.fromEntity(subscriptionEntity), event.getPodcast(),
 					event.getEpisodes());

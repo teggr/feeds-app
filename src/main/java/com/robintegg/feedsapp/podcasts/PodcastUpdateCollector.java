@@ -49,9 +49,13 @@ public class PodcastUpdateCollector {
 			podcast.onFetch(podcastLatest);
 
 			podcastRepository.save(podcast);
+
+			log.info("publishing updates");
+
 			PodcastUpdateEvent event = new PodcastUpdateEvent(this, Podcast.fromEntity(podcast),
 					podcastLatest.getEpisodes());
 			applicationEventPublisher.publishEvent(event);
+
 			return event;
 		} catch (Exception e) {
 			log.error("failed to fetch podcast", e);
@@ -64,12 +68,22 @@ public class PodcastUpdateCollector {
 
 		PodcastEntity podcast = podcastRepository.findById(id).orElseThrow();
 
+		log.info("refreshing podcast {}[{}]", podcast.getFeedTitle(), podcast.getFeedUrl());
+
 		PodcastLatest podcastLatest = podcastDataService.getPodcastLatest(podcast.getFeedUrl(),
 				podcast.getLastFetched());
+
+		log.info("lastest podcast episodes {}", podcastLatest.getEpisodes().size());
 
 		podcast.onFetch(podcastLatest);
 
 		podcastRepository.save(podcast);
+
+		log.info("publishing updates");
+
+		PodcastUpdateEvent event = new PodcastUpdateEvent(this, Podcast.fromEntity(podcast),
+				podcastLatest.getEpisodes());
+		applicationEventPublisher.publishEvent(event);
 
 	}
 
