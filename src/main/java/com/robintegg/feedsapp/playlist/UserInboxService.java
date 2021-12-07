@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.podcasts.Episode;
@@ -21,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 class UserInboxService implements UserInbox {
 
 	private final PodcastEpisodeRepository podcastEpisodeRepository;
+	private final JavaMailSender javaMailSender;
+	private final UserProperties userProperties;
 
 	@Override
 	public void put(Subscription subscription, Podcast podcast, Collection<Episode> episodes) {
@@ -30,6 +34,14 @@ class UserInboxService implements UserInbox {
 
 		podcastEpisodeRepository.saveAll(episodes.stream().map(e -> PodcastEpisodeEntity.forEpisode(subscription, e))
 				.collect(Collectors.toList()));
+
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("teggr-feeds-app@heroku.com");
+		message.setTo(userProperties.getEmail());
+		message.setSubject("Podcast Update Summary");
+		message.setText(
+				String.format("Podcast Subscription %s recevied %s episodes", podcast.getFeedTitle(), episodes.size()));
+		javaMailSender.send(message);
 
 	}
 
