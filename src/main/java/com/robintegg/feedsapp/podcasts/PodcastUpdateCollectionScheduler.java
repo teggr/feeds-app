@@ -13,7 +13,7 @@ class PodcastUpdateCollectionScheduler {
 
     private final PodcastUpdateCollector podcastUpdateCollector;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void fetchPodcasts() {
     	
     	log.info("Starting podcast update collection");
