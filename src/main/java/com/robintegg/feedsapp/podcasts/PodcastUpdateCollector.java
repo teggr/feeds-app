@@ -48,7 +48,7 @@ public class PodcastUpdateCollector {
 
 			podcast.onFetch(podcastLatest);
 
-			podcastRepository.save(podcast);
+			podcast = podcastRepository.save(podcast);
 
 			log.info("publishing updates");
 
@@ -78,7 +78,7 @@ public class PodcastUpdateCollector {
 
 		podcast.onFetch(podcastLatest);
 
-		podcastRepository.save(podcast);
+		podcast = podcastRepository.save(podcast);
 
 		log.info("publishing updates");
 

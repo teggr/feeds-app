@@ -77,9 +77,9 @@ class PodcastEntity {
 		feedImageUrl = podcastMetadata.getImage().getUrl();
 		feedImageTitle = podcastMetadata.getImage().getTitle();
 
-		lastFetched = podcastLatest.getTimestamp();
-
 		saveEpisodes(podcastLatest.getEpisodes());
+
+		lastFetched = podcastLatest.getTimestamp();
 
 	}
 
