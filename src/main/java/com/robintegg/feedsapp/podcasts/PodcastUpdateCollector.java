@@ -32,10 +32,13 @@ public class PodcastUpdateCollector {
 
 	}
 
-	private void publishFetchResults(List<PodcastUpdateEvent> fetchAllResults) {
+	private void publishFetchResults(List<PodcastUpdateEvent> events) {
 
-		fetchAllResults.stream().forEach(
+		events.stream().forEach(
 				e -> log.info("{} published {} new episodes", e.getPodcast().getFeedTitle(), e.getEpisodes().size()));
+
+		PodcastCollectionEvent event = new PodcastCollectionEvent(this, events);
+		applicationEventPublisher.publishEvent(event);
 
 	}
 
@@ -85,6 +88,8 @@ public class PodcastUpdateCollector {
 		PodcastUpdateEvent event = new PodcastUpdateEvent(this, Podcast.fromEntity(podcast),
 				podcastLatest.getEpisodes());
 		applicationEventPublisher.publishEvent(event);
+
+		publishFetchResults(List.of(event));
 
 	}
 
