@@ -1,5 +1,7 @@
 package com.robintegg.feedsapp.playlist;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,6 +29,7 @@ public class PodcastEpisodeEntity {
 		PodcastEpisodeEntity subscriptionEpisode = new PodcastEpisodeEntity();
 		subscriptionEpisode.episodeId = episode.getId();
 		subscriptionEpisode.subscriptionId = subscription.getId();
+		subscriptionEpisode.receivedDateTime = LocalDateTime.now();
 		return subscriptionEpisode;
 	}
 
@@ -44,6 +47,9 @@ public class PodcastEpisodeEntity {
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private PodcastEpisodeStatus status;
+
+	@Column(name = "received_date_time")
+	private LocalDateTime receivedDateTime;
 
 	public void notInterested() {
 		status = PodcastEpisodeStatus.NOT_INTERESTED;

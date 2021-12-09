@@ -1,5 +1,6 @@
 package com.robintegg.feedsapp.playlist;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,5 +13,7 @@ interface PodcastEpisodeRepository extends JpaRepository<PodcastEpisodeEntity, L
 	List<PodcastEpisodeEntity> findAllByStatus(PodcastEpisodeStatus interested);
 
 	List<PodcastEpisodeEntity> findAllByStatusIsNull();
+
+	List<PodcastEpisodeEntity> findAllByReceivedDateTimeGreaterThan(LocalDateTime receivedDateTime);
 
 }
