@@ -40,15 +40,17 @@ class PodcastSubscriptionsService implements PodcastSubscriptions {
 
 	@Override
 	public PodcastSubscription getByPodcast(Long podcastId) {
-		SubscriptionEntity sub = subscriptionRepository.findByPodcastId(podcastId).orElseThrow();
-		try {
-			Podcast podcast = podcasts.get(sub.getPodcastId());
-			if (podcast != null) {
-				return new PodcastSubscription(podcast, Subscription.fromEntity(sub));
-			}
-		} catch (Exception e) {
-			log.warn("could not get podcast {}", sub.getPodcastId());
+		SubscriptionEntity sub = subscriptionRepository.findByPodcastId(podcastId).orElse(null);
+		if (sub != null) {
+			try {
+				Podcast podcast = podcasts.get(sub.getPodcastId());
+				if (podcast != null) {
+					return new PodcastSubscription(podcast, Subscription.fromEntity(sub));
+				}
+			} catch (Exception e) {
+				log.warn("could not get podcast {}", sub.getPodcastId());
 
+			}
 		}
 		return null;
 	}

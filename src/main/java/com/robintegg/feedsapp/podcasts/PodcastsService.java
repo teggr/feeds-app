@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ class PodcastsService implements Podcasts {
 
 	private final PodcastDataService podcastDataService;
 	private final PodcastRepository podcastRepository;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	public void addPodcastWithUrl(URL feedUrl) {
@@ -21,7 +23,9 @@ class PodcastsService implements Podcasts {
 		PodcastMetadata podcastMetadata = podcastDataService.getPodcastMetadata(feedUrl);
 
 		PodcastEntity podcast = PodcastEntity.forMetadata(podcastMetadata);
-		podcastRepository.save(podcast);
+		podcast = podcastRepository.save(podcast);
+
+		applicationEventPublisher.publishEvent(new NewPodcastEvent(this, Podcast.fromEntity(podcast)));
 
 	}
 

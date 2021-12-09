@@ -90,7 +90,7 @@ class PodcastEntity {
 	}
 
 	private void saveEpisode(EpisodeEntity ee) {
-		log.info("adding episode {} to {}", ee.getEpisodeId(), feedTitle);
+		// log.info("adding episode {} to {}", ee.getEpisodeId(), feedTitle);
 		episodes.add(ee);
 		ee.setPodcast(this);
 	}
