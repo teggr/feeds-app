@@ -34,7 +34,8 @@ public class Episode {
 	}
 
 	public boolean isPublishedSince(ZonedDateTime dateTime) {
-		log.info("[{}] {} for published {} and since {}", id, publishedDate.isAfter(dateTime), publishedDate, dateTime);
+		// log.info("[{}] {} for published {} and since {}", id,
+		// publishedDate.isAfter(dateTime), publishedDate, dateTime);
 		return publishedDate.isAfter(dateTime);
 	}
 

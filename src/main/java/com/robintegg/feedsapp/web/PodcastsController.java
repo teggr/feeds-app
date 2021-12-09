@@ -45,7 +45,7 @@ public class PodcastsController {
 
 	@PostMapping(path = "/podcasts", params = "refresh")
 	public String postRefreshAll() {
-		podcastFetchService.collect();
+		podcastFetchService.getUpdatesForAllPodcasts();
 		return "redirect:/";
 	}
 
@@ -66,7 +66,7 @@ public class PodcastsController {
 	@PostMapping(path = "/podcasts/{id}", params = "refresh")
 	public String postRefresh(@PathVariable("id") Long id) {
 		log.info("refresh podcast {}", id);
-		podcastFetchService.fetch(id);
+		podcastFetchService.getUpdatesForPodcast(id);
 		return "redirect:/podcasts/" + id;
 	}
 

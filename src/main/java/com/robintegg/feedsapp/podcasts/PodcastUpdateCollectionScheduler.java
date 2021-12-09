@@ -18,7 +18,7 @@ class PodcastUpdateCollectionScheduler {
     	
     	log.info("Starting podcast update collection");
 
-        podcastUpdateCollector.collect();
+        podcastUpdateCollector.getUpdatesForAllPodcasts();
         
         log.info("Completed podcast update collection");
 
