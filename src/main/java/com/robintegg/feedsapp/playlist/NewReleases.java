@@ -32,7 +32,7 @@ public class NewReleases {
 		try {
 			return podcasts.getEpisode(se.getEpisodeId());
 		} catch (Exception e) {
-			log.warn("could not load episode");
+			log.warn("could not load episode " + se.getEpisodeId());
 			return null;
 		}
 	}

@@ -27,8 +27,8 @@ public class AsyncPodcastUpdateCollector {
 
 		log.info("starting to collect podcast updates");
 
-		List<PodcastUpdateEvent> fetchAllResults = podcastRepository.findAll().stream().parallel()
-				.map(this::fetchIgnoreErrors).collect(Collectors.toList());
+		List<PodcastUpdateEvent> fetchAllResults = podcastRepository.findAll().stream().map(this::fetchIgnoreErrors)
+				.collect(Collectors.toList());
 
 		publishFetchResults(fetchAllResults);
 
