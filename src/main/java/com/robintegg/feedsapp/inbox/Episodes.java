@@ -1,4 +1,4 @@
-package com.robintegg.feedsapp.playlist;
+package com.robintegg.feedsapp.inbox;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

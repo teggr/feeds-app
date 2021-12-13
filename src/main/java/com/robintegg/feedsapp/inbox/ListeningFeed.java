@@ -1,4 +1,4 @@
-package com.robintegg.feedsapp.playlist;
+package com.robintegg.feedsapp.inbox;
 
 import java.util.List;
 
@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class NewReleases {
+public class ListeningFeed {
 
-	private final UserInboxes userInboxes;
+	private final UserInbox userInbox;
 
 	public List<Episode> fetch(User user) {
 
-		return userInboxes.getUserInbox(user).findAllPodcasts(null, Episode.ORDER_BY_MOST_RECENT);
+		return userInbox.findAllPodcasts(user, PodcastEpisodeStatus.INTERESTED, Episode.ORDER_BY_MOST_RECENT);
 
 	}
 

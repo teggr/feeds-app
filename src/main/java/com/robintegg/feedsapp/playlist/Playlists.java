@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.robintegg.feedsapp.inbox.ListeningFeed;
 import com.robintegg.feedsapp.podcasts.Episode;
 
 import lombok.RequiredArgsConstructor;

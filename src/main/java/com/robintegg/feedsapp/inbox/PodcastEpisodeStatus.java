@@ -1,4 +1,4 @@
-package com.robintegg.feedsapp.playlist;
+package com.robintegg.feedsapp.inbox;
 
 public enum PodcastEpisodeStatus {
 

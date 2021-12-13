@@ -1,4 +1,4 @@
-package com.robintegg.feedsapp.playlist;
+package com.robintegg.feedsapp.inbox;
 
 import java.time.LocalDateTime;
 import java.util.List;

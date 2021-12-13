@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.robintegg.feedsapp.playlist.Episodes;
-import com.robintegg.feedsapp.playlist.NewReleases;
+import com.robintegg.feedsapp.inbox.Episodes;
+import com.robintegg.feedsapp.inbox.NewReleases;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
 
 import lombok.RequiredArgsConstructor;

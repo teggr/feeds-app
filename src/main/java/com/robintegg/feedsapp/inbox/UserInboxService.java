@@ -1,4 +1,4 @@
-package com.robintegg.feedsapp.playlist;
+package com.robintegg.feedsapp.inbox;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.podcasts.Episode;
@@ -28,7 +29,7 @@ class UserInboxService implements UserInbox {
 	private final PodcastEpisodeRepository podcastEpisodeRepository;
 
 	@Override
-	public void put(Subscription subscription, Podcast podcast, Collection<Episode> episodes) {
+	public void put(User user, Subscription subscription, Podcast podcast, Collection<Episode> episodes) {
 
 		log.info("subscription {} sent {} new episodes for podcast {}", subscription.getId(), episodes.size(),
 				podcast.getFeedTitle());
@@ -39,7 +40,7 @@ class UserInboxService implements UserInbox {
 	}
 
 	@Override
-	public List<Episode> findAllPodcasts(PodcastEpisodeStatus status, Comparator<Episode> sortBy) {
+	public List<Episode> findAllPodcasts(User user, PodcastEpisodeStatus status, Comparator<Episode> sortBy) {
 
 		List<PodcastEpisodeEntity> findAllByStatus;
 		if (status == null) {

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.robintegg.feedsapp.playlist.NewReleases;
+import com.robintegg.feedsapp.inbox.NewReleases;
 
 import lombok.RequiredArgsConstructor;
 
