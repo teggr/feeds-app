@@ -2,12 +2,11 @@ package com.robintegg.feedsapp.podcasts;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 
 import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
 
 @Value
-@Slf4j
 public class Episode {
 
 	String id;
@@ -17,9 +16,8 @@ public class Episode {
 	Image image;
 	Audio audio;
 
-	public static int ORDER_BY_MOST_RECENT(Episode e1, Episode e2) {
-		return e2.getPublishedDate().compareTo(e1.getPublishedDate());
-	}
+	public static Comparator<Episode> ORDER_BY_MOST_RECENT = (e1, e2) -> e2.getPublishedDate()
+			.compareTo(e1.getPublishedDate());
 
 	public boolean hasEpisodeLink() {
 		return linkUrl != null;

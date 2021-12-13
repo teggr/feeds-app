@@ -3,6 +3,7 @@ package com.robintegg.feedsapp.subscriptions;
 import java.time.ZonedDateTime;
 
 import org.springframework.context.ApplicationListener;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.playlist.UserInboxes;
@@ -31,7 +32,10 @@ public class PodcastEpisodeDistributor implements ApplicationListener<PodcastUpd
 
 			log.info("subscription {} for podcast found", subscriptionEntity.getId());
 
-			userInboxes.getUserInbox().put(Subscription.fromEntity(subscriptionEntity), event.getPodcast(),
+			// TODO: need to assign a user id / details to subscription
+			User user = (User) User.withUsername("anon").build();
+
+			userInboxes.getUserInbox(user).put(Subscription.fromEntity(subscriptionEntity), event.getPodcast(),
 					event.getEpisodes());
 
 			subscriptionEntity.setLastUpdated(ZonedDateTime.now());
