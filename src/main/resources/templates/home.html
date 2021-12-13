@@ -62,7 +62,7 @@
                     // Toggle the "is-hidden" class on the parent list element
                     $target.classList.toggle('is-hidden');
 
-                    fetch('/subscriptions/not-interested/'+ episodeId, {
+                    fetch('/episodes/not-interested/'+ episodeId, {
                         method: 'POST'
                     })
                     .then(response => response)
@@ -95,7 +95,7 @@
                     // Toggle the "is-hidden" class on the parent list element
                     $target.classList.toggle('is-hidden');
 
-                    fetch('/subscriptions/interested/'+ episodeId, {
+                    fetch('/episodes/interested/'+ episodeId, {
                         method: 'POST'
                     })
                         .then(response => response)
