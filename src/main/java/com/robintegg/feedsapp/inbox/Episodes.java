@@ -1,5 +1,6 @@
 package com.robintegg.feedsapp.inbox;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,25 +11,25 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class Episodes {
 
-	private final PodcastEpisodeRepository subscriptionEpisodesRepository;
+	private final PodcastEpisodeRepository podcastEpisodeRepository;
 
-	public void notInterested(String episodeId) {
+	public void notInterested(User user, String episodeId) {
 
-		PodcastEpisodeEntity subscription = subscriptionEpisodesRepository.findByEpisodeId(episodeId).orElseThrow();
+		PodcastEpisodeEntity episode = podcastEpisodeRepository.findByEpisodeId(episodeId).orElseThrow();
 
-		subscription.notInterested();
+		episode.notInterested();
 
-		subscriptionEpisodesRepository.save(subscription);
+		podcastEpisodeRepository.save(episode);
 
 	}
 
-	public void interested(String episodeId) {
+	public void interested(User user, String episodeId) {
 
-		PodcastEpisodeEntity subscription = subscriptionEpisodesRepository.findByEpisodeId(episodeId).orElseThrow();
+		PodcastEpisodeEntity episode = podcastEpisodeRepository.findByEpisodeId(episodeId).orElseThrow();
 
-		subscription.interested();
+		episode.interested();
 
-		subscriptionEpisodesRepository.save(subscription);
+		podcastEpisodeRepository.save(episode);
 
 	}
 

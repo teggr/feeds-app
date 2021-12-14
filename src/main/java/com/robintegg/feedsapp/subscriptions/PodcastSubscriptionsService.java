@@ -3,6 +3,7 @@ package com.robintegg.feedsapp.subscriptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ class PodcastSubscriptionsService implements PodcastSubscriptions {
 	private final SubscriptionRepository subscriptionRepository;
 
 	@Override
-	public List<PodcastSubscription> findAll() {
+	public List<PodcastSubscription> findAll(User user) {
 		List<PodcastSubscription> list = new ArrayList<>();
 		List<SubscriptionEntity> subscriptions = subscriptionRepository.findAll();
 		for (SubscriptionEntity sub : subscriptions) {
@@ -39,7 +40,7 @@ class PodcastSubscriptionsService implements PodcastSubscriptions {
 	}
 
 	@Override
-	public PodcastSubscription getByPodcast(Long podcastId) {
+	public PodcastSubscription getByPodcast(User user, Long podcastId) {
 		SubscriptionEntity sub = subscriptionRepository.findByPodcastId(podcastId).orElse(null);
 		if (sub != null) {
 			try {
@@ -56,14 +57,14 @@ class PodcastSubscriptionsService implements PodcastSubscriptions {
 	}
 
 	@Override
-	public void startSubscribingTo(Long podcastId) {
+	public void startSubscribingTo(User user, Long podcastId) {
 		SubscriptionEntity subscription = SubscriptionEntity.forPodcast(podcastId);
 
 		subscriptionRepository.save(subscription);
 	}
 
 	@Override
-	public void stopSubscription(Long subscriptionId) {
+	public void stopSubscription(User user, Long subscriptionId) {
 		subscriptionRepository.deleteById(subscriptionId);
 	}
 

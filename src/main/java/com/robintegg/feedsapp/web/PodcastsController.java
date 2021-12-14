@@ -3,6 +3,8 @@ package com.robintegg.feedsapp.web;
 import java.net.URL;
 import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +32,10 @@ public class PodcastsController {
 	private final PodcastSubscriptions podcastSubscriptions;
 
 	@GetMapping("/podcasts")
-	public String get(Model model) {
+	public String get(@AuthenticationPrincipal User user, Model model) {
 		model.addAttribute("podcasts", podcasts.getAll());
 		// TODO: user related
-		model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll()));
+		model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll(user)));
 		return "podcasts/podcasts";
 	}
 
@@ -50,12 +52,12 @@ public class PodcastsController {
 	}
 
 	@GetMapping("/podcasts/{id}")
-	public String get(@PathVariable("id") Long id, Model model) {
+	public String get(@AuthenticationPrincipal User user, @PathVariable("id") Long id, Model model) {
 		Podcast podcast = podcasts.get(id);
 		model.addAttribute("podcast", podcast);
 		model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
 		// TODO: user related
-		Subscription subscription = Optional.ofNullable(podcastSubscriptions.getByPodcast(id))
+		Subscription subscription = Optional.ofNullable(podcastSubscriptions.getByPodcast(user, id))
 				.map(PodcastSubscription::getSubscription).orElse(null);
 		model.addAttribute("subscribe", subscription == null);
 		model.addAttribute("unsubscribe", subscription != null);

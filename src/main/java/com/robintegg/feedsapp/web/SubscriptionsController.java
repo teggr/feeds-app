@@ -1,5 +1,7 @@
 package com.robintegg.feedsapp.web;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,20 +21,21 @@ public class SubscriptionsController {
 	private final PodcastSubscriptions podcastSubscriptions;
 
 	@PostMapping(path = "/subscriptions/subscribe")
-	public String postSubscribe(@RequestHeader("Referer") String referer, @RequestParam("podcastId") Long podcastId) {
-		podcastSubscriptions.startSubscribingTo(podcastId);
+	public String postSubscribe(@AuthenticationPrincipal User user, @RequestHeader("Referer") String referer,
+			@RequestParam("podcastId") Long podcastId) {
+		podcastSubscriptions.startSubscribingTo(user, podcastId);
 		return "redirect:" + referer;
 	}
 
 	@GetMapping(path = "/subscriptions")
-	public String getPodcastSubscriptions(Model model) {
-		model.addAttribute("podcastSubscriptions", podcastSubscriptions.findAll());
+	public String getPodcastSubscriptions(@AuthenticationPrincipal User user, Model model) {
+		model.addAttribute("podcastSubscriptions", podcastSubscriptions.findAll(user));
 		return "subscriptions/subscriptions";
 	}
 
 	@PostMapping(path = "/subscriptions/{id}/unsubscribe")
-	public String postSubscribe(@PathVariable("id") Long subscriptionId) {
-		podcastSubscriptions.stopSubscription(subscriptionId);
+	public String postSubscribe(@AuthenticationPrincipal User user, @PathVariable("id") Long subscriptionId) {
+		podcastSubscriptions.stopSubscription(user, subscriptionId);
 		return "redirect:/subscriptions";
 	}
 
