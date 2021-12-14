@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.robintegg.feedsapp.podcasts.Podcast;
-import com.robintegg.feedsapp.podcasts.PodcastUpdateCollector;
+import com.robintegg.feedsapp.podcasts.PodcastEpisodePublisher;
 import com.robintegg.feedsapp.podcasts.Podcasts;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscription;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PodcastsController {
 
 	private final Podcasts podcasts;
-	private final PodcastUpdateCollector podcastFetchService;
+	private final PodcastEpisodePublisher podcastEpisodePublisher;
 	private final PodcastSubscriptions podcastSubscriptions;
 
 	@GetMapping("/podcasts")
@@ -47,7 +47,7 @@ public class PodcastsController {
 
 	@PostMapping(path = "/podcasts", params = "refresh")
 	public String postRefreshAll() {
-		podcastFetchService.getUpdatesForAllPodcasts();
+		podcastEpisodePublisher.publishAllLatestPodcastEpisodes();
 		return "redirect:/";
 	}
 
@@ -68,7 +68,7 @@ public class PodcastsController {
 	@PostMapping(path = "/podcasts/{id}", params = "refresh")
 	public String postRefresh(@PathVariable("id") Long id) {
 		log.info("refresh podcast {}", id);
-		podcastFetchService.getUpdatesForPodcast(id);
+		podcastEpisodePublisher.publishLatestPodcastsEpisodesFor(id);
 		return "redirect:/podcasts/" + id;
 	}
 

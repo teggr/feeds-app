@@ -20,7 +20,7 @@ class PodcastsService implements Podcasts {
 	@Override
 	public void addPodcastWithUrl(URL feedUrl) {
 
-		PodcastMetadata podcastMetadata = podcastDataService.getPodcastMetadata(feedUrl);
+		PodcastFeedMetadata podcastMetadata = podcastDataService.getPodcastFeedMetadata(feedUrl);
 
 		PodcastEntity podcast = PodcastEntity.forMetadata(podcastMetadata);
 		podcast = podcastRepository.save(podcast);
@@ -46,7 +46,7 @@ class PodcastsService implements Podcasts {
 
 	@Override
 	public Episode getEpisode(String episodeId) {
-		return podcastRepository.findEpisodeById(episodeId).map(EpisodeEntity::to).orElseThrow();
+		return podcastRepository.findEpisodeById(episodeId).map(PodcastEpisodeEntity::to).orElseThrow();
 	}
 
 }

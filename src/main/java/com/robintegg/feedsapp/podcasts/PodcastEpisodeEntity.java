@@ -17,11 +17,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "episodes")
+@Table(name = "podcast_episodes")
 @NoArgsConstructor
 @Getter
 @Setter
-class EpisodeEntity {
+class PodcastEpisodeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,8 +60,8 @@ class EpisodeEntity {
 		return publishedDate.isAfter(dateTime);
 	}
 
-	public static EpisodeEntity from(Episode e) {
-		EpisodeEntity entity = new EpisodeEntity();
+	public static PodcastEpisodeEntity from(Episode e) {
+		PodcastEpisodeEntity entity = new PodcastEpisodeEntity();
 		entity.episodeId = e.getId();
 		entity.title = e.getTitle();
 		entity.linkUrl = e.getLinkUrl();
@@ -73,7 +73,7 @@ class EpisodeEntity {
 		return entity;
 	}
 
-	public static Episode to(EpisodeEntity entity) {
+	public static Episode to(PodcastEpisodeEntity entity) {
 		return new Episode(entity.episodeId, entity.title, entity.linkUrl, entity.publishedDate,
 				new Image(entity.imageUrl, entity.imageTitle), new Audio(entity.audioUrl, entity.audioType));
 	}

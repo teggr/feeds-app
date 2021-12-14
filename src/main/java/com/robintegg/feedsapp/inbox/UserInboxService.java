@@ -57,7 +57,7 @@ class UserInboxService implements UserInbox {
 		try {
 			return podcasts.getEpisode(se.getEpisodeId());
 		} catch (Exception e) {
-			log.warn("could not load episode " + se.getEpisodeId());
+			log.warn("could not load episode " + se.getEpisodeId(), e);
 			return null;
 		}
 	}

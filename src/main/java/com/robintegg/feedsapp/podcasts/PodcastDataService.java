@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 class PodcastDataService {
 
 	@SneakyThrows
-	public PodcastLatest getPodcastLatest(URL feedUrl, ZonedDateTime since) {
+	public PodcastFeedUpdate getPodcastFeedUpdate(URL feedUrl, ZonedDateTime since) {
 
 		log.info("reading podcast feed {}", feedUrl);
 
@@ -49,13 +49,13 @@ class PodcastDataService {
 
 		log.info("found {} podcast episodes published since {}", episodes.size(), since);
 
-		return PodcastLatest.builder().podcastMetadata(new PodcastMetadata(feedUrl, title, linkUrl, image))
+		return PodcastFeedUpdate.builder().metadata(new PodcastFeedMetadata(feedUrl, title, linkUrl, image))
 				.episodes(episodes).build();
 
 	}
 
 	@SneakyThrows
-	public PodcastMetadata getPodcastMetadata(URL feedUrl) {
+	public PodcastFeedMetadata getPodcastFeedMetadata(URL feedUrl) {
 
 		String feedData = StreamUtils.copyToString(feedUrl.openStream(), StandardCharsets.UTF_8);
 
@@ -66,7 +66,7 @@ class PodcastDataService {
 		String title = feed.getTitle();
 		URL linkUrl = new URL(feed.getLink());
 
-		return new PodcastMetadata(feedUrl, title, linkUrl, image);
+		return new PodcastFeedMetadata(feedUrl, title, linkUrl, image);
 
 	}
 

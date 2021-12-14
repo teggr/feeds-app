@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.inbox.UserInbox;
-import com.robintegg.feedsapp.podcasts.PodcastUpdateEvent;
+import com.robintegg.feedsapp.podcasts.NewPodcastEpisodesEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PodcastEpisodeDistributor implements ApplicationListener<PodcastUpdateEvent> {
+public class PodcastEpisodeDistributor implements ApplicationListener<NewPodcastEpisodesEvent> {
 
 	private final SubscriptionRepository subscriptionRepository;
 	private final UserInbox userInbox;
 
 	@Override
-	public void onApplicationEvent(PodcastUpdateEvent event) {
+	public void onApplicationEvent(NewPodcastEpisodesEvent event) {
 
 		log.info("new podcast data published for {}", event.getPodcast().getFeedTitle());
 
