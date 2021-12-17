@@ -41,4 +41,7 @@ class SubscriptionEntity {
 	@Column(name = "last_updated")
 	private ZonedDateTime lastUpdated = null;
 
+	@Column(name = "username")
+	private String username;
+
 }

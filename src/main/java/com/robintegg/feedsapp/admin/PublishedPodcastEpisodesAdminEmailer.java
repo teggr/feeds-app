@@ -24,7 +24,7 @@ class PublishedPodcastEpisodesAdminEmailer implements ApplicationListener<Podcas
 	@Override
 	public void onApplicationEvent(PodcastEpisodesPublishedEvent event) {
 
-		log.info("podcast collection event");
+		log.info("Sending Podcast Episodes Published to Admin users");
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("teggr-feeds-app@heroku.com");
@@ -41,7 +41,7 @@ class PublishedPodcastEpisodesAdminEmailer implements ApplicationListener<Podcas
 		StringBuilder builder = new StringBuilder();
 		builder.append(String.format("Published %s Podcast Episodes for %s Podcasts", episodeCount(events),
 				podcastCount(events)));
-		builder.append("\n");
+		builder.append("\n=================================\n");
 		for (NewPodcastEpisodesEvent event : events.getEvents()) {
 			builder.append(String.format("%s updated with %s episodes", event.getPodcast().getFeedTitle(),
 					event.getEpisodes().size()));

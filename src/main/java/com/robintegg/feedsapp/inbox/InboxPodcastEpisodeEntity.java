@@ -19,18 +19,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "subscription_episodes")
+@Table(name = "inbox_podcast_episodes")
 @NoArgsConstructor
 @Getter
 @Setter
-public class PodcastEpisodeEntity {
+public class InboxPodcastEpisodeEntity {
 
-	public static PodcastEpisodeEntity forEpisode(Subscription subscription, Episode episode) {
-		PodcastEpisodeEntity subscriptionEpisode = new PodcastEpisodeEntity();
-		subscriptionEpisode.episodeId = episode.getId();
-		subscriptionEpisode.subscriptionId = subscription.getId();
-		subscriptionEpisode.receivedDateTime = LocalDateTime.now();
-		return subscriptionEpisode;
+	public static InboxPodcastEpisodeEntity forEpisode(String username, Subscription subscription, Episode episode) {
+		InboxPodcastEpisodeEntity inboxEpisode = new InboxPodcastEpisodeEntity();
+		inboxEpisode.episodeId = episode.getId();
+		inboxEpisode.subscriptionId = subscription.getId();
+		inboxEpisode.receivedDateTime = LocalDateTime.now();
+		inboxEpisode.username = username;
+		return inboxEpisode;
 	}
 
 	@Id
@@ -44,23 +45,26 @@ public class PodcastEpisodeEntity {
 	@Column(name = "episode_id")
 	private String episodeId;
 
+	@Column(name = "username")
+	private String username;
+
 	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
-	private PodcastEpisodeStatus status;
+	private InboxPodcastEpisodeStatus status;
 
 	@Column(name = "received_date_time")
 	private LocalDateTime receivedDateTime;
 
 	public void notInterested() {
-		status = PodcastEpisodeStatus.NOT_INTERESTED;
+		status = InboxPodcastEpisodeStatus.NOT_INTERESTED;
 	}
 
 	public boolean isInterested() {
-		return status != PodcastEpisodeStatus.NOT_INTERESTED;
+		return status != InboxPodcastEpisodeStatus.NOT_INTERESTED;
 	}
 
 	public void interested() {
-		status = PodcastEpisodeStatus.INTERESTED;
+		status = InboxPodcastEpisodeStatus.INTERESTED;
 	}
 
 	public boolean hasNoStatus() {

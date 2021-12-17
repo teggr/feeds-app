@@ -14,13 +14,14 @@ import lombok.RequiredArgsConstructor;
 public class SeedUserData implements ApplicationRunner {
 
 	private final UserDetailsManager userDetailsManager;
+	private final UserProperties userProperties;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
-		if (!userDetailsManager.userExists("rtegg")) {
-			UserDetails user = User.withDefaultPasswordEncoder().username("rtegg").password("password")
-					.roles("ADMIN", "USER").build();
+		if (!userDetailsManager.userExists(userProperties.getEmail())) {
+			UserDetails user = User.withDefaultPasswordEncoder().username(userProperties.getEmail())
+					.password("password").roles("ADMIN", "USER").build();
 			userDetailsManager.createUser(user);
 		}
 

@@ -15,11 +15,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NewReleases {
 
-	private final UserInbox userInbox;
+	private final Inbox userInbox;
 
 	public List<Episode> fetch(User user) {
 
-		return userInbox.findAllPodcasts(user, null, Episode.ORDER_BY_MOST_RECENT);
+		return userInbox.findAllPodcasts(user.getUsername(), null, Episode.ORDER_BY_MOST_RECENT);
 
 	}
 

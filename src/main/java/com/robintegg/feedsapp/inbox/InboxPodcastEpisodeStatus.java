@@ -1,6 +1,6 @@
 package com.robintegg.feedsapp.inbox;
 
-public enum PodcastEpisodeStatus {
+public enum InboxPodcastEpisodeStatus {
 
     NOT_INTERESTED, INTERESTED;
 

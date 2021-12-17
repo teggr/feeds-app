@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.podcasts.Episode;
@@ -23,37 +22,39 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-class UserInboxService implements UserInbox {
+class InboxService implements Inbox {
 
 	private final Podcasts podcasts;
-	private final PodcastEpisodeRepository podcastEpisodeRepository;
+	private final InboxPodcastEpisodeRepository podcastEpisodeRepository;
 
 	@Override
-	public void put(User user, Subscription subscription, Podcast podcast, Collection<Episode> episodes) {
+	public void put(String username, Subscription subscription, Podcast podcast, Collection<Episode> episodes) {
 
-		log.info("subscription {} sent {} new episodes for podcast {}", subscription.getId(), episodes.size(),
-				podcast.getFeedTitle());
+		log.info("{} new Episodes for Podcast {} published through Subscription {} for User {}", episodes.size(),
+				podcast.getFeedTitle(), subscription.getId(), username);
 
-		podcastEpisodeRepository.saveAll(episodes.stream().map(e -> PodcastEpisodeEntity.forEpisode(subscription, e))
-				.collect(Collectors.toList()));
+		podcastEpisodeRepository
+				.saveAll(episodes.stream().map(e -> InboxPodcastEpisodeEntity.forEpisode(username, subscription, e))
+						.collect(Collectors.toList()));
 
 	}
 
 	@Override
-	public List<Episode> findAllPodcasts(User user, PodcastEpisodeStatus status, Comparator<Episode> sortBy) {
+	public List<Episode> findAllPodcasts(String username, InboxPodcastEpisodeStatus status,
+			Comparator<Episode> sortBy) {
 
-		List<PodcastEpisodeEntity> findAllByStatus;
+		List<InboxPodcastEpisodeEntity> findAllByStatus;
 		if (status == null) {
-			findAllByStatus = podcastEpisodeRepository.findAllByStatusIsNull();
+			findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndStatusIsNull(username);
 		} else {
-			findAllByStatus = podcastEpisodeRepository.findAllByStatus(status);
+			findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndStatus(username, status);
 		}
 		return findAllByStatus.stream().map(this::toEpisode).filter(Objects::nonNull).sorted(sortBy)
 				.collect(Collectors.toList());
 
 	}
 
-	private Episode toEpisode(PodcastEpisodeEntity se) {
+	private Episode toEpisode(InboxPodcastEpisodeEntity se) {
 		try {
 			return podcasts.getEpisode(se.getEpisodeId());
 		} catch (Exception e) {

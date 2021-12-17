@@ -11,11 +11,12 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class Episodes {
 
-	private final PodcastEpisodeRepository podcastEpisodeRepository;
+	private final InboxPodcastEpisodeRepository podcastEpisodeRepository;
 
 	public void notInterested(User user, String episodeId) {
 
-		PodcastEpisodeEntity episode = podcastEpisodeRepository.findByEpisodeId(episodeId).orElseThrow();
+		InboxPodcastEpisodeEntity episode = podcastEpisodeRepository
+				.findByUsernameAndEpisodeId(user.getUsername(), episodeId).orElseThrow();
 
 		episode.notInterested();
 
@@ -25,7 +26,8 @@ public class Episodes {
 
 	public void interested(User user, String episodeId) {
 
-		PodcastEpisodeEntity episode = podcastEpisodeRepository.findByEpisodeId(episodeId).orElseThrow();
+		InboxPodcastEpisodeEntity episode = podcastEpisodeRepository
+				.findByUsernameAndEpisodeId(user.getUsername(), episodeId).orElseThrow();
 
 		episode.interested();
 
