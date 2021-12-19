@@ -68,4 +68,13 @@ class PodcastSubscriptionsService implements PodcastSubscriptions {
 		subscriptionRepository.deleteById(subscriptionId);
 	}
 
+	@Override
+	public void transferAllSubscriptionsToUser(String username) {
+
+		List<SubscriptionEntity> subscriptions = subscriptionRepository.findAll();
+		subscriptions.forEach(se -> se.setUsername(username));
+		subscriptionRepository.saveAll(subscriptions);
+
+	}
+
 }

@@ -14,4 +14,6 @@ public interface Inbox {
 
 	List<Episode> findAllPodcasts(String username, InboxPodcastEpisodeStatus status, Comparator<Episode> sortBy);
 
+	void moveAllPodcastEpidodesToInbox(String username);
+
 }

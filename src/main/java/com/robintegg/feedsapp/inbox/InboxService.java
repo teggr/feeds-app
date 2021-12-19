@@ -63,4 +63,13 @@ class InboxService implements Inbox {
 		}
 	}
 
+	@Override
+	public void moveAllPodcastEpidodesToInbox(String username) {
+
+		List<InboxPodcastEpisodeEntity> podcastEpisodes = podcastEpisodeRepository.findAll();
+		podcastEpisodes.forEach(pe -> pe.setUsername(username));
+		podcastEpisodeRepository.saveAll(podcastEpisodes);
+
+	}
+
 }

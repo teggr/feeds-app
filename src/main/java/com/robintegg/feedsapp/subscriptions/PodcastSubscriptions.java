@@ -14,4 +14,6 @@ public interface PodcastSubscriptions {
 
 	void stopSubscription(User user, Long subscriptionId);
 
+	void transferAllSubscriptionsToUser(String username);
+
 }
