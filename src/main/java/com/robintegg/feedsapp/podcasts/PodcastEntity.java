@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class PodcastEntity {
 
-	public static PodcastEntity forMetadata(PodcastMetadata podcastMetadata) {
+	public static PodcastEntity forMetadata(PodcastFeedMetadata podcastMetadata) {
 		PodcastEntity podcast = new PodcastEntity();
 		podcast.feedUrl = podcastMetadata.getFeedUrl();
 		podcast.feedTitle = podcastMetadata.getTitle();
@@ -66,30 +66,30 @@ class PodcastEntity {
 
 	@OneToMany(mappedBy = "podcast", cascade = CascadeType.ALL)
 	@OrderBy("publishedDate DESC")
-	private Set<EpisodeEntity> episodes = new HashSet<>();
+	private Set<PodcastEpisodeEntity> episodes = new HashSet<>();
 
-	public void onFetch(PodcastLatest podcastLatest) {
+	public void onPodcastFeedUpdate(PodcastFeedUpdate podcastFeedUpdate) {
 
-		PodcastMetadata podcastMetadata = podcastLatest.getPodcastMetadata();
+		PodcastFeedMetadata metadata = podcastFeedUpdate.getMetadata();
 
-		feedTitle = podcastMetadata.getTitle();
-		feedLinkUrl = podcastMetadata.getLinkUrl();
-		feedImageUrl = podcastMetadata.getImage().getUrl();
-		feedImageTitle = podcastMetadata.getImage().getTitle();
+		feedTitle = metadata.getTitle();
+		feedLinkUrl = metadata.getLinkUrl();
+		feedImageUrl = metadata.getImage().getUrl();
+		feedImageTitle = metadata.getImage().getTitle();
 
-		saveEpisodes(podcastLatest.getEpisodes());
+		saveEpisodes(podcastFeedUpdate.getEpisodes());
 
-		lastFetched = podcastLatest.getTimestamp();
+		lastFetched = podcastFeedUpdate.getTimestamp();
 
 	}
 
 	private void saveEpisodes(List<Episode> episodes) {
 
-		episodes.stream().map(e -> EpisodeEntity.from(e)).forEach(ee -> saveEpisode(ee));
+		episodes.stream().map(e -> PodcastEpisodeEntity.from(e)).forEach(ee -> saveEpisode(ee));
 
 	}
 
-	private void saveEpisode(EpisodeEntity ee) {
+	private void saveEpisode(PodcastEpisodeEntity ee) {
 		// log.info("adding episode {} to {}", ee.getEpisodeId(), feedTitle);
 		episodes.add(ee);
 		ee.setPodcast(this);

@@ -1,0 +1,1 @@
+ALTER TABLE episodes RENAME TO podcast_episodes;

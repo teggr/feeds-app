@@ -1,0 +1,1 @@
+ALTER TABLE subscriptions ADD COLUMN username varchar(50);

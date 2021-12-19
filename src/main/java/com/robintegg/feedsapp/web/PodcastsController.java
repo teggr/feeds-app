@@ -3,6 +3,8 @@ package com.robintegg.feedsapp.web;
 import java.net.URL;
 import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.robintegg.feedsapp.podcasts.Podcast;
-import com.robintegg.feedsapp.podcasts.PodcastUpdateCollector;
+import com.robintegg.feedsapp.podcasts.PodcastEpisodePublisher;
 import com.robintegg.feedsapp.podcasts.Podcasts;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscription;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
@@ -26,14 +28,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PodcastsController {
 
 	private final Podcasts podcasts;
-	private final PodcastUpdateCollector podcastFetchService;
+	private final PodcastEpisodePublisher podcastEpisodePublisher;
 	private final PodcastSubscriptions podcastSubscriptions;
 
 	@GetMapping("/podcasts")
-	public String get(Model model) {
+	public String get(@AuthenticationPrincipal User user, Model model) {
 		model.addAttribute("podcasts", podcasts.getAll());
 		// TODO: user related
-		model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll()));
+		model.addAttribute("subscriptions", new SubscriptionHelper(podcastSubscriptions.findAll(user)));
 		return "podcasts/podcasts";
 	}
 
@@ -45,17 +47,17 @@ public class PodcastsController {
 
 	@PostMapping(path = "/podcasts", params = "refresh")
 	public String postRefreshAll() {
-		podcastFetchService.getUpdatesForAllPodcasts();
+		podcastEpisodePublisher.publishAllLatestPodcastEpisodes();
 		return "redirect:/";
 	}
 
 	@GetMapping("/podcasts/{id}")
-	public String get(@PathVariable("id") Long id, Model model) {
+	public String get(@AuthenticationPrincipal User user, @PathVariable("id") Long id, Model model) {
 		Podcast podcast = podcasts.get(id);
 		model.addAttribute("podcast", podcast);
 		model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
 		// TODO: user related
-		Subscription subscription = Optional.ofNullable(podcastSubscriptions.getByPodcast(id))
+		Subscription subscription = Optional.ofNullable(podcastSubscriptions.getByPodcast(user, id))
 				.map(PodcastSubscription::getSubscription).orElse(null);
 		model.addAttribute("subscribe", subscription == null);
 		model.addAttribute("unsubscribe", subscription != null);
@@ -66,7 +68,7 @@ public class PodcastsController {
 	@PostMapping(path = "/podcasts/{id}", params = "refresh")
 	public String postRefresh(@PathVariable("id") Long id) {
 		log.info("refresh podcast {}", id);
-		podcastFetchService.getUpdatesForPodcast(id);
+		podcastEpisodePublisher.publishLatestPodcastsEpisodesFor(id);
 		return "redirect:/podcasts/" + id;
 	}
 

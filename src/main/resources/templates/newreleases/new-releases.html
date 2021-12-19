@@ -24,17 +24,19 @@
                         </div>
                         <div class="level">
                             <div class="level-left">
-                                <div class="level-item">
-                                    <button class="button is-success is-outlined interested" th:data-episode-id="${episode.id}">Interested</button>
-                                </div>
-                                <div class="level-item">
-                                    <button class="button is-danger is-outlined not-interested" th:data-episode-id="${episode.id}">Not Interested</button>
-                                </div>
-                                <div class="level-item">
-                                    <div class="level-item">
-                                        <a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
-                                    </div>
-                                </div>
+                            	<form th:action="@{/episodes/{episodeId}(episodeId=${episode.id})}" method="POST">
+	                                <div class="level-item">
+	                                    <button type="button" class="button is-success is-outlined interested" name="interested" onclick="window.interested();" >Interested</button>
+	                                </div>
+	                                <div class="level-item">
+	                                    <button type="button" class="button is-danger is-outlined not-interested" name="not-interested" onclick="window.notInterested();" >Not Interested</buttontype="button">
+	                                </div>
+	                                <div class="level-item">
+	                                    <div class="level-item">
+	                                        <a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
+	                                    </div>
+	                                </div>
+                            	</form>
                             </div>
                         </div>
                     </div>
@@ -45,32 +47,31 @@
 
 </section>
 
-<!-- scripts -->
-
 <script type="application/javascript">
 
-    document.addEventListener("DOMContentLoaded", function(event) {
-
-        // Get all "not-interested" elements
-        const $notInterested = Array.prototype.slice.call(document.querySelectorAll('.not-interested'), 0);
-
-        // Check if there are any elements
-        if ($notInterested.length > 0) {
-
-            // Add a click event on each of them
-            $notInterested.forEach( el => {
-                el.addEventListener('click', () => {
-
-                    // Get the target from the "data-target" attribute
-                    const episodeId = el.dataset.episodeId;
-                    const $target = el.closest('li');
-
-                    console.log(episodeId);
-                    // Toggle the "is-hidden" class on the parent list element
-                    $target.classList.toggle('is-hidden');
-
-                    fetch('/subscriptions/not-interested/'+ episodeId, {
-                        method: 'POST'
+    window.notInterested = function(e) {
+	    e = e || window.event;
+	    
+	    e.preventDefault();
+	    
+	    const $element = e.target || e.srcElement;
+	    
+	    const $form = $element.form;
+	    
+	    const $target = $element.closest('li');
+	    
+	    // Toggle the "is-hidden" class on the parent list element
+        $target.classList.toggle('is-hidden');
+        
+        var token = document.getElementsByName('_csrf')[0].getAttribute('content');
+		var header = document.getElementsByName('_csrf_header')[0].getAttribute('content');
+        
+        var myHeaders = new Headers();
+		myHeaders.append(header, token);
+        
+        fetch( $form.action + '/not-interested', {
+                        method: 'POST',
+                        headers: myHeaders
                     })
                     .then(response => response)
                     .then(data => {
@@ -79,45 +80,46 @@
                     .catch((error) => {
                         console.error('Error:', error);
                     });
-
-                });
-            });
-        }
-
-        // Get all "interested" elements
-        const $interested = Array.prototype.slice.call(document.querySelectorAll('.interested'), 0);
-
-        // Check if there are any elements
-        if ($interested.length > 0) {
-
-            // Add a click event on each of them
-            $interested.forEach( el => {
-                el.addEventListener('click', () => {
-
-                    // Get the target from the "data-target" attribute
-                    const episodeId = el.dataset.episodeId;
-                    const $target = el.closest('li');
-
-                    console.log(episodeId);
-                    // Toggle the "is-hidden" class on the parent list element
-                    $target.classList.toggle('is-hidden');
-
-                    fetch('/subscriptions/interested/'+ episodeId, {
-                        method: 'POST'
+		
+		return false;
+	
+	}
+	
+	window.interested = function(e) {
+	    e = e || window.event;
+	    
+	    e.preventDefault();
+	    
+	    const $element = e.target || e.srcElement;
+	    
+	    const $form = $element.form;
+	    
+	    const $target = $element.closest('li');
+	    
+	    // Toggle the "is-hidden" class on the parent list element
+        $target.classList.toggle('is-hidden');
+		
+		var token = document.getElementsByName('_csrf')[0].getAttribute('content');
+		var header = document.getElementsByName('_csrf_header')[0].getAttribute('content');
+        
+        var myHeaders = new Headers();
+		myHeaders.append(header, token);
+        
+        fetch( $form.action + '/interested', {
+                        method: 'POST',
+                        headers: myHeaders
                     })
-                        .then(response => response)
-                        .then(data => {
-                            console.log('Success:', data);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
-
-                });
-            });
-        }
-
-    });
+                    .then(response => response)
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+		
+		return false;
+	
+	}
 
 </script>
 

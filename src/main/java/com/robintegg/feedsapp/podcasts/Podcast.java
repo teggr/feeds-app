@@ -23,10 +23,10 @@ public class Podcast {
 	URL feedLinkUrl;
 	URL feedImageUrl;
 	String feedImageTitle;
-	Set<EpisodeEntity> episodes;
+	Set<PodcastEpisodeEntity> episodes;
 
 	public List<Episode> getMostRecentEpisodes(int limit) {
-		return episodes.stream().limit(limit).map(EpisodeEntity::to).collect(Collectors.toList());
+		return episodes.stream().limit(limit).map(PodcastEpisodeEntity::to).collect(Collectors.toList());
 
 	}
 

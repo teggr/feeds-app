@@ -1,6 +1,7 @@
 package com.robintegg.feedsapp.web;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.robintegg.feedsapp.playlist.Episodes;
-import com.robintegg.feedsapp.playlist.NewReleases;
 import com.robintegg.feedsapp.subscriptions.PodcastSubscriptions;
 
 import lombok.RequiredArgsConstructor;
@@ -20,36 +19,23 @@ import lombok.RequiredArgsConstructor;
 public class SubscriptionsController {
 
 	private final PodcastSubscriptions podcastSubscriptions;
-	private final NewReleases newReleases;
-	private final Episodes episodes;
 
 	@PostMapping(path = "/subscriptions/subscribe")
-	public String postSubscribe(@RequestHeader("Referer") String referer, @RequestParam("podcastId") Long podcastId) {
-		podcastSubscriptions.startSubscribingTo(podcastId);
+	public String postSubscribe(@AuthenticationPrincipal User user, @RequestHeader("Referer") String referer,
+			@RequestParam("podcastId") Long podcastId) {
+		podcastSubscriptions.startSubscribingTo(user, podcastId);
 		return "redirect:" + referer;
 	}
 
-	@PostMapping(path = "/subscriptions/not-interested/{episodeId}")
-	public ResponseEntity postNotInterested(@PathVariable("episodeId") String episodeId) {
-		episodes.notInterested(episodeId);
-		return ResponseEntity.accepted().build();
-	}
-
-	@PostMapping(path = "/subscriptions/interested/{episodeId}")
-	public ResponseEntity postInterested(@PathVariable("episodeId") String episodeId) {
-		episodes.interested(episodeId);
-		return ResponseEntity.accepted().build();
-	}
-
 	@GetMapping(path = "/subscriptions")
-	public String getPodcastSubscriptions(Model model) {
-		model.addAttribute("podcastSubscriptions", podcastSubscriptions.findAll());
+	public String getPodcastSubscriptions(@AuthenticationPrincipal User user, Model model) {
+		model.addAttribute("podcastSubscriptions", podcastSubscriptions.findAll(user));
 		return "subscriptions/subscriptions";
 	}
 
 	@PostMapping(path = "/subscriptions/{id}/unsubscribe")
-	public String postSubscribe(@PathVariable("id") Long subscriptionId) {
-		podcastSubscriptions.stopSubscription(subscriptionId);
+	public String postSubscribe(@AuthenticationPrincipal User user, @PathVariable("id") Long subscriptionId) {
+		podcastSubscriptions.stopSubscription(user, subscriptionId);
 		return "redirect:/subscriptions";
 	}
 

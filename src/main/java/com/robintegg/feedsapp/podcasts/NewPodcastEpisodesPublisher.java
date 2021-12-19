@@ -9,16 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class NewPodcastRefreshListener implements ApplicationListener<NewPodcastEvent> {
+class NewPodcastEpisodesPublisher implements ApplicationListener<NewPodcastEvent> {
 
-	private final PodcastUpdateCollector podcastUpdateCollector;
+	private final PodcastEpisodePublisher podcastEpisodePublisher;
 
 	@Override
 	public void onApplicationEvent(NewPodcastEvent event) {
 
-		log.info("Refreshing Podcast feed for new podcast");
+		log.info("New Podcast added. Publishing latest podcast episodes for {}", event.getPodcast().getId());
 
-		podcastUpdateCollector.getUpdatesForPodcast(event.getPodcast().getId());
+		podcastEpisodePublisher.publishLatestPodcastsEpisodesFor(event.getPodcast().getId());
 
 	}
 

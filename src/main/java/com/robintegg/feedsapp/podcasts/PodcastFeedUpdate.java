@@ -8,11 +8,11 @@ import lombok.Value;
 
 @Value
 @Builder
-public class PodcastLatest {
+class PodcastFeedUpdate {
 
-	PodcastMetadata podcastMetadata;
+	PodcastFeedMetadata metadata;
 	List<Episode> episodes;
 	@Builder.Default
 	ZonedDateTime timestamp = ZonedDateTime.now();
-	
+
 }

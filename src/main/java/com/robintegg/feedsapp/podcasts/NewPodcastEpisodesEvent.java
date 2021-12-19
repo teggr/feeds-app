@@ -5,12 +5,12 @@ import java.util.Collection;
 import org.springframework.context.ApplicationEvent;
 
 @SuppressWarnings("serial")
-public class PodcastUpdateEvent extends ApplicationEvent {
+public class NewPodcastEpisodesEvent extends ApplicationEvent {
 
 	private final Collection<Episode> episodes;
 	private final Podcast podcast;
 
-	public PodcastUpdateEvent(Object source, Podcast podcast, Collection<Episode> episodes) {
+	public NewPodcastEpisodesEvent(Object source, Podcast podcast, Collection<Episode> episodes) {
 		super(source);
 		this.podcast = podcast;
 		this.episodes = episodes;
@@ -22,6 +22,10 @@ public class PodcastUpdateEvent extends ApplicationEvent {
 
 	public Collection<Episode> getEpisodes() {
 		return episodes;
+	}
+
+	public int getEpisodeCount() {
+		return episodes.size();
 	}
 
 }
