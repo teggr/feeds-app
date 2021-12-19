@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.robintegg.feedsapp.podcasts.Episode;
 import com.robintegg.feedsapp.podcasts.Podcast;
 import com.robintegg.feedsapp.subscriptions.Subscription;
@@ -15,5 +18,7 @@ public interface Inbox {
 	List<Episode> findAllPodcasts(String username, InboxPodcastEpisodeStatus status, Comparator<Episode> sortBy);
 
 	void moveAllPodcastEpidodesToInbox(String username);
+
+	Page<Episode> getItems(String username, Pageable pageable);
 
 }

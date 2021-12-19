@@ -4,7 +4,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.robintegg.feedsapp.inbox.ListeningFeed;
+import com.robintegg.feedsapp.inbox.Inbox;
 import com.robintegg.feedsapp.podcasts.Episode;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class Playlists {
 
-	private final ListeningFeed feed;
+	private final Inbox inbox;
 	private final PlaylistRepository playlistRepository;
 
 	public Episode getCurrent(User user, String episodeId) {
@@ -38,7 +38,8 @@ public class Playlists {
 	}
 
 	private Episode findNextEpisodeInFeed(User user, String episode) {
-		return feed.fetch(user).stream().filter(e -> e.getId().equals(episode)).findFirst().get();
+		return inbox.getItems(user.getUsername(), null).stream().filter(e -> e.getId().equals(episode)).findFirst()
+				.get();
 	}
 
 }

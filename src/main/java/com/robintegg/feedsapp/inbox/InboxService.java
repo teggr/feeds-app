@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.podcasts.Episode;
@@ -69,6 +71,16 @@ class InboxService implements Inbox {
 		List<InboxPodcastEpisodeEntity> podcastEpisodes = podcastEpisodeRepository.findAll();
 		podcastEpisodes.forEach(pe -> pe.setUsername(username));
 		podcastEpisodeRepository.saveAll(podcastEpisodes);
+
+	}
+
+	@Override
+	public Page<Episode> getItems(String username, Pageable pageable) {
+
+		Page<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndStatus(username,
+				InboxPodcastEpisodeStatus.INTERESTED, pageable);
+
+		return findAllByStatus.map(this::toEpisode);
 
 	}
 
