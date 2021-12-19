@@ -17,14 +17,14 @@ public class EpisodesController {
 
 	private final Episodes episodes;
 
-	@PostMapping(path = "/episodes/not-interested/{episodeId}")
+	@PostMapping(path = "/episodes/{episodeId}/not-interested")
 	public ResponseEntity postNotInterested(@AuthenticationPrincipal User user,
 			@PathVariable("episodeId") String episodeId) {
 		episodes.notInterested(user, episodeId);
 		return ResponseEntity.accepted().build();
 	}
 
-	@PostMapping(path = "/episodes/interested/{episodeId}")
+	@PostMapping(path = "/episodes/{episodeId}/interested")
 	public ResponseEntity postInterested(@AuthenticationPrincipal User user,
 			@PathVariable("episodeId") String episodeId) {
 		episodes.interested(user, episodeId);
