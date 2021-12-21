@@ -34,7 +34,7 @@ class ScheduledLatestPodcastEpisodesEmailer {
 
 		for (FeedsAppUser interestedUser : interestedUsers) {
 
-			List<InboxPodcastEpisodeEntity> episodes = inboxPodcastEpisodeRepository
+			List<InboxPodcastEpisode> episodes = inboxPodcastEpisodeRepository
 					.findAllByUsernameAndReceivedDateTimeGreaterThan(interestedUser.getUsername(),
 							LocalDateTime.now().minusDays(1));
 
@@ -51,12 +51,12 @@ class ScheduledLatestPodcastEpisodesEmailer {
 
 	}
 
-	private String createText(List<InboxPodcastEpisodeEntity> episodes) {
+	private String createText(List<InboxPodcastEpisode> episodes) {
 		if (episodes.isEmpty()) {
 			return "No new episodes";
 		} else {
 			StringBuilder builder = new StringBuilder();
-			for (InboxPodcastEpisodeEntity episode : episodes) {
+			for (InboxPodcastEpisode episode : episodes) {
 				builder.append(String.format("%s", episode.getEpisodeId()));
 				builder.append("\n");
 			}

@@ -8,15 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface InboxPodcastEpisodeRepository extends JpaRepository<InboxPodcastEpisodeEntity, Long> {
+interface InboxPodcastEpisodeRepository extends JpaRepository<InboxPodcastEpisode, Long> {
 
-	Optional<InboxPodcastEpisodeEntity> findByUsernameAndEpisodeId(String username, String episodeId);
+	Optional<InboxPodcastEpisode> findByUsernameAndEpisodeId(String username, String episodeId);
 
-	List<InboxPodcastEpisodeEntity> findAllByUsernameAndIgnored(String username, boolean ignored);
+	List<InboxPodcastEpisode> findAllByUsernameAndIgnored(String username, boolean ignored);
 
-	List<InboxPodcastEpisodeEntity> findAllByUsernameAndReceivedDateTimeGreaterThan(String username,
+	List<InboxPodcastEpisode> findAllByUsernameAndReceivedDateTimeGreaterThan(String username,
 			LocalDateTime receivedDateTime);
 
-	Page<InboxPodcastEpisodeEntity> findAllByUsernameAndIgnored(String username, boolean ignored, Pageable pageable);
+	Page<InboxPodcastEpisode> findAllByUsernameAndIgnored(String username, boolean ignored, Pageable pageable);
 
 }

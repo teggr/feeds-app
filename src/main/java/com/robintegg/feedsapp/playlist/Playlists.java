@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.robintegg.feedsapp.inbox.Inbox;
-import com.robintegg.feedsapp.podcasts.Episode;
+import com.robintegg.feedsapp.inbox.InboxPodcastEpisode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,29 +17,26 @@ public class Playlists {
 	private final Inbox inbox;
 	private final PlaylistRepository playlistRepository;
 
-	public Episode getCurrent(User user, String episodeId) {
+	public InboxPodcastEpisode getCurrent(User user, String episodeId) {
 
 		Playlist playlist = playlistRepository.findAll().stream().findFirst().orElse(new Playlist());
 
 		if (episodeId == null) {
 			episodeId = playlist.getEpisodeId();
-			if (episodeId == null) {
-				episodeId = findNextEpisodeInFeed(user, episodeId).getId();
-			}
 		}
 
-		Episode episode = findNextEpisodeInFeed(user, episodeId);
+		InboxPodcastEpisode episode = null;
+		if (episodeId == null) {
+			episode = inbox.getTopItem(user.getUsername());
+		} else {
+			episode = inbox.getItem(user.getUsername(), episodeId);
+		}
 
-		playlist.setEpisodeId(episode.getId());
+		playlist.setEpisodeId(episode.getEpisodeId());
 
 		playlistRepository.save(playlist);
 
 		return episode;
-	}
-
-	private Episode findNextEpisodeInFeed(User user, String episode) {
-		return inbox.getItems(user.getUsername(), null).stream().filter(e -> e.getId().equals(episode)).findFirst()
-				.get();
 	}
 
 }

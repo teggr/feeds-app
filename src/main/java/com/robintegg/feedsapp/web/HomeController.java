@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.robintegg.feedsapp.inbox.Inbox;
-import com.robintegg.feedsapp.podcasts.Episode;
+import com.robintegg.feedsapp.inbox.InboxPodcastEpisode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,9 +27,9 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String get(@AuthenticationPrincipal User user,
-			@PageableDefault(sort = "receivedDateTime", direction = Direction.ASC) Pageable pageable, Model model) {
-		Page<Episode> items = inbox.getItems(user.getUsername(), pageable);
-		model.addAttribute("episodes", items);
+			@PageableDefault(sort = "episodePublishedDate", direction = Direction.ASC) Pageable pageable, Model model) {
+		Page<InboxPodcastEpisode> items = inbox.getItems(user.getUsername(), pageable);
+		model.addAttribute("items", items);
 		if (items.hasNext()) {
 			Pageable nextPageable = items.nextPageable();
 			ServletUriComponentsBuilder uriComponentsBuilder = ServletUriComponentsBuilder.fromCurrentRequest();

@@ -1,9 +1,7 @@
 package com.robintegg.feedsapp.inbox;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.robintegg.feedsapp.podcasts.Episode;
 import com.robintegg.feedsapp.podcasts.Podcast;
-import com.robintegg.feedsapp.podcasts.Podcasts;
 import com.robintegg.feedsapp.subscriptions.Subscription;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class InboxService implements Inbox {
 
-	private final Podcasts podcasts;
 	private final InboxPodcastEpisodeRepository podcastEpisodeRepository;
 
 	@Override
@@ -36,59 +32,50 @@ class InboxService implements Inbox {
 				podcast.getFeedTitle(), subscription.getId(), username);
 
 		podcastEpisodeRepository
-				.saveAll(episodes.stream().map(e -> InboxPodcastEpisodeEntity.forEpisode(username, subscription, e))
+				.saveAll(episodes.stream().map(e -> InboxPodcastEpisode.forEpisode(username, subscription, podcast, e))
 						.collect(Collectors.toList()));
 
 	}
 
 	@Override
-	public List<Episode> findAllPodcasts(String username, boolean ignored, Comparator<Episode> sortBy) {
-
-		List<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndIgnored(username,
-				ignored);
-
-		return findAllByStatus.stream().map(this::toEpisode).filter(Objects::nonNull).sorted(sortBy)
-				.collect(Collectors.toList());
-
-	}
-
-	private Episode toEpisode(InboxPodcastEpisodeEntity se) {
-		try {
-			return podcasts.getEpisode(se.getEpisodeId());
-		} catch (Exception e) {
-			log.warn("could not load episode " + se.getEpisodeId(), e);
-			return null;
-		}
-	}
-
-	@Override
 	public void moveAllPodcastEpidodesToInbox(String username) {
 
-		List<InboxPodcastEpisodeEntity> podcastEpisodes = podcastEpisodeRepository.findAll();
+		List<InboxPodcastEpisode> podcastEpisodes = podcastEpisodeRepository.findAll();
 		podcastEpisodes.forEach(pe -> pe.setUsername(username));
 		podcastEpisodeRepository.saveAll(podcastEpisodes);
 
 	}
 
 	@Override
-	public Page<Episode> getItems(String username, Pageable pageable) {
+	public Page<InboxPodcastEpisode> getItems(String username, Pageable pageable) {
 
-		Page<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndIgnored(username,
-				false, pageable);
-
-		return findAllByStatus.map(this::toEpisode);
+		return podcastEpisodeRepository.findAllByUsernameAndIgnored(username, false, pageable);
 
 	}
 
 	@Override
 	public void ignore(String username, String episodeId) {
 
-		InboxPodcastEpisodeEntity episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
+		InboxPodcastEpisode episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
 				.orElseThrow();
 
 		episode.setIgnored(true);
 
 		podcastEpisodeRepository.save(episode);
+
+	}
+
+	@Override
+	public InboxPodcastEpisode getItem(String username, String episodeId) {
+
+		return podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId).orElseThrow();
+
+	}
+
+	@Override
+	public InboxPodcastEpisode getTopItem(String username) {
+
+		return podcastEpisodeRepository.findAll().stream().findFirst().orElseThrow();
 
 	}
 

@@ -31,7 +31,7 @@ public class ListenController {
 
 		log.info("episodeId={},refererUrl={}", episodeId, refererUrl);
 
-		model.addAttribute("episode", playlist.getCurrent(user, episodeId));
+		model.addAttribute("item", playlist.getCurrent(user, episodeId));
 		model.addAttribute("navigateBackUrl", refererUrl);
 
 		// response.addHeader("Cache-Control", "no-cache");

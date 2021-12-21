@@ -9,26 +9,26 @@
 <section class="section">
     <h1 class="title">Inbox</h1>
     <ul id="items">
-        <li th:each="episode : ${episodes}">
+        <li th:each="item : ${items}">
             <div class="box">
                 <article class="media">
                     <figure class="media-left">
                         <p class="image is-64x64">
-                            <img th:src="${episode.imageUrl}" th:alt="${episode.imageTitle}">
+                            <img th:src="${item.episodeImageUrl}" th:alt="${item.episodeImageTitle}">
                         </p>
                     </figure>
                     <div class="media-content">
                         <div class="content">
-                            <p class="title is-5">[(${episode.title})]</p>
-                            <p th:text="${#temporals.format(episode.publishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
+                            <p class="title is-5">[(${item.episodeTitle})]</p>
+                            <p th:text="${#temporals.format(item.episodePublishedDate, 'dd/MMM/yyyy HH:mm')}" class="subtitle is-6"></p>
                         </div>
                         <div class="level">
                             <div class="level-left">
 	                            <div class="level-item">
-	                            	<form th:action="@{/episodes/{episodeId}(episodeId=${episode.id})}" method="POST">
+	                            	<form th:action="@{/episodes/{episodeId}(episodeId=${item.episodeId})}" method="POST">
 	                                	<div class="field is-grouped">
   											<p class="control">
-  												<a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
+  												<a class="button" th:href="@{/listen(episodeId=${item.episodeId})}">Play</a>
   											</p>
   											<p class="control">
 	                                    		<button type="button" class="button is-danger is-outlined" onclick="window.notInterested();" >Ignore</button>
