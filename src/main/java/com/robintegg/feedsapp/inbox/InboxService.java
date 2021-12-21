@@ -79,4 +79,21 @@ class InboxService implements Inbox {
 
 	}
 
+	@Override
+	public List<InboxPodcastEpisode> getItemsForSubscription(String username, Long subscriptionId) {
+		return podcastEpisodeRepository.findAllByUsernameAndSubscriptionId(username, subscriptionId);
+	}
+
+	@Override
+	public void undoIgnore(String username, String episodeId) {
+
+		InboxPodcastEpisode episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
+				.orElseThrow();
+
+		episode.setIgnored(false);
+
+		podcastEpisodeRepository.save(episode);
+
+	}
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.robintegg.feedsapp.inbox.Inbox;
 import com.robintegg.feedsapp.podcasts.Podcast;
 import com.robintegg.feedsapp.podcasts.PodcastEpisodePublisher;
 import com.robintegg.feedsapp.podcasts.Podcasts;
@@ -30,6 +31,7 @@ public class PodcastsController {
 	private final Podcasts podcasts;
 	private final PodcastEpisodePublisher podcastEpisodePublisher;
 	private final PodcastSubscriptions podcastSubscriptions;
+	private final Inbox inbox;
 
 	@GetMapping("/podcasts")
 	public String get(@AuthenticationPrincipal User user, Model model) {
@@ -53,15 +55,20 @@ public class PodcastsController {
 
 	@GetMapping("/podcasts/{id}")
 	public String get(@AuthenticationPrincipal User user, @PathVariable("id") Long id, Model model) {
+
 		Podcast podcast = podcasts.get(id);
 		model.addAttribute("podcast", podcast);
 		model.addAttribute("episodes", podcast.getMostRecentEpisodes(10));
+
 		// TODO: user related
 		Subscription subscription = Optional.ofNullable(podcastSubscriptions.getByPodcast(user, id))
 				.map(PodcastSubscription::getSubscription).orElse(null);
 		model.addAttribute("subscribe", subscription == null);
 		model.addAttribute("unsubscribe", subscription != null);
 		model.addAttribute("subscription", subscription);
+
+		model.addAttribute("inbox", SubscriptionInboxHelper.forSubscription(user.getUsername(), subscription, inbox));
+
 		return "podcasts/podcast";
 	}
 

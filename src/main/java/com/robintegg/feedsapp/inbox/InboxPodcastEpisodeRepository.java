@@ -19,4 +19,6 @@ interface InboxPodcastEpisodeRepository extends JpaRepository<InboxPodcastEpisod
 
 	Page<InboxPodcastEpisode> findAllByUsernameAndIgnored(String username, boolean ignored, Pageable pageable);
 
+	List<InboxPodcastEpisode> findAllByUsernameAndSubscriptionId(String username, Long subscriptionId);
+
 }

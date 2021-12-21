@@ -1,6 +1,7 @@
 package com.robintegg.feedsapp.inbox;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,5 +23,9 @@ public interface Inbox {
 	InboxPodcastEpisode getTopItem(String username);
 
 	InboxPodcastEpisode getItem(String username, String episodeId);
+
+	List<InboxPodcastEpisode> getItemsForSubscription(String username, Long subscriptionId);
+
+	void undoIgnore(String username, String episodeId);
 
 }

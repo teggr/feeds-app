@@ -18,9 +18,15 @@ public class EpisodesController {
 	private final Inbox inbox;
 
 	@PostMapping(path = "/episodes/{episodeId}/ignore")
-	public ResponseEntity postNotInterested(@AuthenticationPrincipal User user,
-			@PathVariable("episodeId") String episodeId) {
+	public ResponseEntity postIgnore(@AuthenticationPrincipal User user, @PathVariable("episodeId") String episodeId) {
 		inbox.ignore(user.getUsername(), episodeId);
+		return ResponseEntity.accepted().build();
+	}
+
+	@PostMapping(path = "/episodes/{episodeId}/undoIgnore")
+	public ResponseEntity postUndoIgnore(@AuthenticationPrincipal User user,
+			@PathVariable("episodeId") String episodeId) {
+		inbox.undoIgnore(user.getUsername(), episodeId);
 		return ResponseEntity.accepted().build();
 	}
 
