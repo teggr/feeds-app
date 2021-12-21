@@ -21,4 +21,6 @@ public interface Inbox {
 
 	Page<Episode> getItems(String username, Pageable pageable);
 
+	void ignore(String username, String episodeId);
+
 }

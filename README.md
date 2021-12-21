@@ -18,15 +18,13 @@ git push heroku main
 ## Features
 
 Home
-* list of episodes interested in
-* not interested
+* list of episodes
 
 Listen
 * media player for list of interested episodes
 
 New Releases
 * see latest episodes
-* interested / not interested
 
 Subscriptions
 * list of subscribed podcasts

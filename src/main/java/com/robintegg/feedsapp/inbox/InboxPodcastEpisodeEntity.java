@@ -46,8 +46,8 @@ public class InboxPodcastEpisodeEntity {
 	@Column(name = "username")
 	private String username;
 
-	@Column(name = "played")
-	private boolean played = false;
+	@Column(name = "ignored")
+	private boolean ignored = false;
 
 	@Column(name = "received_date_time")
 	private LocalDateTime receivedDateTime;

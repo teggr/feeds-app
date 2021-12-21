@@ -42,10 +42,10 @@ class InboxService implements Inbox {
 	}
 
 	@Override
-	public List<Episode> findAllPodcasts(String username, boolean played, Comparator<Episode> sortBy) {
+	public List<Episode> findAllPodcasts(String username, boolean ignored, Comparator<Episode> sortBy) {
 
-		List<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndPlayed(username,
-				played);
+		List<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndIgnored(username,
+				ignored);
 
 		return findAllByStatus.stream().map(this::toEpisode).filter(Objects::nonNull).sorted(sortBy)
 				.collect(Collectors.toList());
@@ -73,10 +73,22 @@ class InboxService implements Inbox {
 	@Override
 	public Page<Episode> getItems(String username, Pageable pageable) {
 
-		Page<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndPlayed(username,
+		Page<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndIgnored(username,
 				false, pageable);
 
 		return findAllByStatus.map(this::toEpisode);
+
+	}
+
+	@Override
+	public void ignore(String username, String episodeId) {
+
+		InboxPodcastEpisodeEntity episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
+				.orElseThrow();
+
+		episode.setIgnored(true);
+
+		podcastEpisodeRepository.save(episode);
 
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.robintegg.feedsapp.inbox.Episodes;
+import com.robintegg.feedsapp.inbox.Inbox;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,19 +15,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EpisodesController {
 
-	private final Episodes episodes;
+	private final Inbox inbox;
 
-	@PostMapping(path = "/episodes/{episodeId}/not-interested")
+	@PostMapping(path = "/episodes/{episodeId}/ignore")
 	public ResponseEntity postNotInterested(@AuthenticationPrincipal User user,
 			@PathVariable("episodeId") String episodeId) {
-		episodes.notInterested(user, episodeId);
-		return ResponseEntity.accepted().build();
-	}
-
-	@PostMapping(path = "/episodes/{episodeId}/interested")
-	public ResponseEntity postInterested(@AuthenticationPrincipal User user,
-			@PathVariable("episodeId") String episodeId) {
-		episodes.interested(user, episodeId);
+		inbox.ignore(user.getUsername(), episodeId);
 		return ResponseEntity.accepted().build();
 	}
 

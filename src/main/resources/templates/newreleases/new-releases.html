@@ -24,19 +24,18 @@
                         </div>
                         <div class="level">
                             <div class="level-left">
-                            	<form th:action="@{/episodes/{episodeId}(episodeId=${episode.id})}" method="POST">
-	                                <div class="level-item">
-	                                    <button type="button" class="button is-success is-outlined interested" name="interested" onclick="window.interested();" >Interested</button>
-	                                </div>
-	                                <div class="level-item">
-	                                    <button type="button" class="button is-danger is-outlined not-interested" name="not-interested" onclick="window.notInterested();" >Not Interested</buttontype="button">
-	                                </div>
-	                                <div class="level-item">
-	                                    <div class="level-item">
-	                                        <a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
-	                                    </div>
-	                                </div>
-                            	</form>
+	                            <div class="level-item">
+                            		<form th:action="@{/episodes/{episodeId}(episodeId=${episode.id})}" method="POST">
+	                                	<div class="field is-grouped">
+  											<p class="control">
+	                                        	<a class="button" th:href="@{/listen(episodeId=${episode.id})}">Play</a>
+  											</p>
+	                               			<p class="control">
+	                                    		<button type="button" class="button is-danger is-outlined" onclick="window.notInterested();" >Ignore</button>
+											</p>	                                  
+	                                   	</div>  
+                            		</form>
+	                        	</div>
                             </div>
                         </div>
                     </div>
@@ -69,43 +68,7 @@
         var myHeaders = new Headers();
 		myHeaders.append(header, token);
         
-        fetch( $form.action + '/not-interested', {
-                        method: 'POST',
-                        headers: myHeaders
-                    })
-                    .then(response => response)
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-		
-		return false;
-	
-	}
-	
-	window.interested = function(e) {
-	    e = e || window.event;
-	    
-	    e.preventDefault();
-	    
-	    const $element = e.target || e.srcElement;
-	    
-	    const $form = $element.form;
-	    
-	    const $target = $element.closest('li');
-	    
-	    // Toggle the "is-hidden" class on the parent list element
-        $target.classList.toggle('is-hidden');
-		
-		var token = document.getElementsByName('_csrf')[0].getAttribute('content');
-		var header = document.getElementsByName('_csrf_header')[0].getAttribute('content');
-        
-        var myHeaders = new Headers();
-		myHeaders.append(header, token);
-        
-        fetch( $form.action + '/interested', {
+        fetch( $form.action + '/ignore', {
                         method: 'POST',
                         headers: myHeaders
                     })
