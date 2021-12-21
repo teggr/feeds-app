@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,27 +46,10 @@ public class InboxPodcastEpisodeEntity {
 	@Column(name = "username")
 	private String username;
 
-	@Column(name = "status")
-	@Enumerated(EnumType.STRING)
-	private InboxPodcastEpisodeStatus status;
+	@Column(name = "played")
+	private boolean played = false;
 
 	@Column(name = "received_date_time")
 	private LocalDateTime receivedDateTime;
-
-	public void notInterested() {
-		status = InboxPodcastEpisodeStatus.NOT_INTERESTED;
-	}
-
-	public boolean isInterested() {
-		return status != InboxPodcastEpisodeStatus.NOT_INTERESTED;
-	}
-
-	public void interested() {
-		status = InboxPodcastEpisodeStatus.INTERESTED;
-	}
-
-	public boolean hasNoStatus() {
-		return status == null;
-	}
 
 }

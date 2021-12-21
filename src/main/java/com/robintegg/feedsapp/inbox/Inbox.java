@@ -15,7 +15,7 @@ public interface Inbox {
 
 	void put(String username, Subscription subscription, Podcast podcast, Collection<Episode> episodes);
 
-	List<Episode> findAllPodcasts(String username, InboxPodcastEpisodeStatus status, Comparator<Episode> sortBy);
+	List<Episode> findAllPodcasts(String username, boolean played, Comparator<Episode> sortBy);
 
 	void moveAllPodcastEpidodesToInbox(String username);
 

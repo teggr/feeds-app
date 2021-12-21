@@ -12,16 +12,11 @@ interface InboxPodcastEpisodeRepository extends JpaRepository<InboxPodcastEpisod
 
 	Optional<InboxPodcastEpisodeEntity> findByUsernameAndEpisodeId(String username, String episodeId);
 
-	List<InboxPodcastEpisodeEntity> findAllByUsernameAndStatus(String username, InboxPodcastEpisodeStatus interested);
-
-	List<InboxPodcastEpisodeEntity> findAllByUsernameAndStatusIsNull(String username);
+	List<InboxPodcastEpisodeEntity> findAllByUsernameAndPlayed(String username, boolean played);
 
 	List<InboxPodcastEpisodeEntity> findAllByUsernameAndReceivedDateTimeGreaterThan(String username,
 			LocalDateTime receivedDateTime);
 
-	Page<InboxPodcastEpisodeEntity> findAllByUsernameAndStatusIsNull(String username, Pageable pageable);
-
-	Page<InboxPodcastEpisodeEntity> findAllByUsernameAndStatus(String username, InboxPodcastEpisodeStatus status,
-			Pageable pageable);
+	Page<InboxPodcastEpisodeEntity> findAllByUsernameAndPlayed(String username, boolean played, Pageable pageable);
 
 }

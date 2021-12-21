@@ -42,15 +42,11 @@ class InboxService implements Inbox {
 	}
 
 	@Override
-	public List<Episode> findAllPodcasts(String username, InboxPodcastEpisodeStatus status,
-			Comparator<Episode> sortBy) {
+	public List<Episode> findAllPodcasts(String username, boolean played, Comparator<Episode> sortBy) {
 
-		List<InboxPodcastEpisodeEntity> findAllByStatus;
-		if (status == null) {
-			findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndStatusIsNull(username);
-		} else {
-			findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndStatus(username, status);
-		}
+		List<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndPlayed(username,
+				played);
+
 		return findAllByStatus.stream().map(this::toEpisode).filter(Objects::nonNull).sorted(sortBy)
 				.collect(Collectors.toList());
 
@@ -77,8 +73,8 @@ class InboxService implements Inbox {
 	@Override
 	public Page<Episode> getItems(String username, Pageable pageable) {
 
-		Page<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndStatus(username,
-				InboxPodcastEpisodeStatus.INTERESTED, pageable);
+		Page<InboxPodcastEpisodeEntity> findAllByStatus = podcastEpisodeRepository.findAllByUsernameAndPlayed(username,
+				false, pageable);
 
 		return findAllByStatus.map(this::toEpisode);
 

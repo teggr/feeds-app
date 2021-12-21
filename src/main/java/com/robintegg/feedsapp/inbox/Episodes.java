@@ -18,7 +18,7 @@ public class Episodes {
 		InboxPodcastEpisodeEntity episode = podcastEpisodeRepository
 				.findByUsernameAndEpisodeId(user.getUsername(), episodeId).orElseThrow();
 
-		episode.notInterested();
+		episode.setPlayed(true);
 
 		podcastEpisodeRepository.save(episode);
 
@@ -29,7 +29,7 @@ public class Episodes {
 		InboxPodcastEpisodeEntity episode = podcastEpisodeRepository
 				.findByUsernameAndEpisodeId(user.getUsername(), episodeId).orElseThrow();
 
-		episode.interested();
+		episode.setPlayed(false);
 
 		podcastEpisodeRepository.save(episode);
 

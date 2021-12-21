@@ -19,7 +19,7 @@ public class NewReleases {
 
 	public List<Episode> fetch(User user) {
 
-		return userInbox.findAllPodcasts(user.getUsername(), null, Episode.ORDER_BY_MOST_RECENT);
+		return userInbox.findAllPodcasts(user.getUsername(), false, Episode.ORDER_BY_MOST_RECENT);
 
 	}
 
