@@ -49,4 +49,9 @@ class PodcastsService implements Podcasts {
 		return podcastRepository.findEpisodeById(episodeId).map(PodcastEpisodeEntity::to).orElseThrow();
 	}
 
+	@Override
+	public Podcast getPodcastForEpisode(String episodeId) {
+		return Podcast.fromEntity(podcastRepository.findEpisodeById(episodeId).get().getPodcast());
+	}
+
 }

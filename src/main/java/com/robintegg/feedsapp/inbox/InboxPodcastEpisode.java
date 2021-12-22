@@ -31,7 +31,7 @@ public class InboxPodcastEpisode {
 
 		InboxPodcastEpisode inboxEpisode = new InboxPodcastEpisode();
 		inboxEpisode.episodeId = episode.getId();
-		inboxEpisode.subscriptionId = subscription.getId();
+		inboxEpisode.subscriptionId = subscription != null ? subscription.getId() : null;
 		inboxEpisode.receivedDateTime = LocalDateTime.now();
 		inboxEpisode.username = username;
 

@@ -29,7 +29,7 @@ class InboxService implements Inbox {
 	public void put(String username, Subscription subscription, Podcast podcast, Collection<Episode> episodes) {
 
 		log.info("{} new Episodes for Podcast {} published through Subscription {} for User {}", episodes.size(),
-				podcast.getFeedTitle(), subscription.getId(), username);
+				podcast.getFeedTitle(), subscription != null ? subscription.getId() : null, username);
 
 		podcastEpisodeRepository
 				.saveAll(episodes.stream().map(e -> InboxPodcastEpisode.forEpisode(username, subscription, podcast, e))

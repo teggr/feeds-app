@@ -65,9 +65,9 @@
 						                        	<a th:href="${episode.linkUrl}" class="button is-link" >Go to site</a>
   												</p>
 						                    </th:block>
-						                   <!-- <p class="control" th:if="${inbox.canAdd(episode.id)}">
-						                    	<button type="button" class="button is-danger is-outlined" onclick="window.addToInbox();" >Add to Inbox</button>
-						                    </p> -->
+						                   	<p class="control" th:if="${inbox.canAdd(episode.id)}">
+						                    	<button type="button" class="button is-danger is-outlined" onclick="window.addToMyInbox();" >Add to my Inbox</button>
+						                    </p>
 	                                	</div>
 	                            	</form>
 	                            </div>
@@ -99,7 +99,7 @@
 
 <script type="application/javascript">
 	
-	window.addToInbox = function(e) {
+	window.addToMyInbox = function(e) {
 	    e = e || window.event;
 	    
 	    e.preventDefault();
@@ -119,8 +119,8 @@
         var myHeaders = new Headers();
 		myHeaders.append(header, token);
         
-        fetch( $form.action + '/addToInbox', {
-                        method: 'POST',
+        fetch( $form.action , {
+                        method: 'PUT',
                         headers: myHeaders
                     })
                     .then(response => response)

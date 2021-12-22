@@ -15,4 +15,6 @@ public interface Podcasts {
 
 	Episode getEpisode(String episodeId);
 
+	Podcast getPodcastForEpisode(String episodeId);
+
 }

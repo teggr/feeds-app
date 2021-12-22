@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PodcastEpisodeDistributor implements ApplicationListener<NewPodcastEpisodesEvent> {
 
 	private final SubscriptionRepository subscriptionRepository;
-	private final Inbox userInbox;
+	private final Inbox inbox;
 
 	@Override
 	public void onApplicationEvent(NewPodcastEpisodesEvent event) {
@@ -32,7 +32,7 @@ public class PodcastEpisodeDistributor implements ApplicationListener<NewPodcast
 			log.info("Podcast Subscription {} for found for User {}", subscriptionEntity.getId(),
 					subscriptionEntity.getUsername());
 
-			userInbox.put(subscriptionEntity.getUsername(), Subscription.fromEntity(subscriptionEntity),
+			inbox.put(subscriptionEntity.getUsername(), Subscription.fromEntity(subscriptionEntity),
 					event.getPodcast(), event.getEpisodes());
 
 			subscriptionEntity.setLastUpdated(ZonedDateTime.now());
