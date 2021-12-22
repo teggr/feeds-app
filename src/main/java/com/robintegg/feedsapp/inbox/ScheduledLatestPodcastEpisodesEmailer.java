@@ -57,7 +57,7 @@ class ScheduledLatestPodcastEpisodesEmailer {
 		} else {
 			StringBuilder builder = new StringBuilder();
 			for (InboxPodcastEpisode episode : episodes) {
-				builder.append(String.format("%s", episode.getEpisodeId()));
+				builder.append(String.format("%s", episode.getEpisodeImageTitle()));
 				builder.append("\n");
 			}
 			return builder.toString();
