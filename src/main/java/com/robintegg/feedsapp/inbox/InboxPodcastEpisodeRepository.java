@@ -12,12 +12,10 @@ interface InboxPodcastEpisodeRepository extends JpaRepository<InboxPodcastEpisod
 
 	Optional<InboxPodcastEpisode> findByUsernameAndEpisodeId(String username, String episodeId);
 
-	List<InboxPodcastEpisode> findAllByUsernameAndIgnored(String username, boolean ignored);
-
 	List<InboxPodcastEpisode> findAllByUsernameAndReceivedDateTimeGreaterThan(String username,
 			LocalDateTime receivedDateTime);
 
-	Page<InboxPodcastEpisode> findAllByUsernameAndIgnored(String username, boolean ignored, Pageable pageable);
+	Page<InboxPodcastEpisode> findAllByUsername(String username, Pageable pageable);
 
 	List<InboxPodcastEpisode> findAllByUsernameAndSubscriptionId(String username, Long subscriptionId);
 

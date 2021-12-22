@@ -60,9 +60,6 @@ public class InboxPodcastEpisode {
 	@Column(name = "username")
 	private String username;
 
-	@Column(name = "ignored")
-	private boolean ignored = false;
-
 	@Column(name = "received_date_time")
 	private LocalDateTime receivedDateTime;
 

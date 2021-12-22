@@ -18,14 +18,12 @@ public interface Inbox {
 
 	Page<InboxPodcastEpisode> getItems(String username, Pageable pageable);
 
-	void ignore(String username, String episodeId);
+	void deleteItem(String username, String episodeId);
 
 	InboxPodcastEpisode getTopItem(String username);
 
 	InboxPodcastEpisode getItem(String username, String episodeId);
 
 	List<InboxPodcastEpisode> getItemsForSubscription(String username, Long subscriptionId);
-
-	void undoIgnore(String username, String episodeId);
 
 }

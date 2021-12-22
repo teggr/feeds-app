@@ -15,16 +15,6 @@ class SubscriptionInboxHelper {
 		this.itemsForSubscription = itemsForSubscription;
 	}
 
-	public boolean canUndoIgnore(String episodeId) {
-		return findEpisode(episodeId).map(e -> e.isIgnored()).orElse(false);
-
-	}
-
-	public boolean canIgnore(String episodeId) {
-		return findEpisode(episodeId).map(e -> !e.isIgnored()).orElse(false);
-
-	}
-
 	public boolean canAdd(String episodeId) {
 		return findEpisode(episodeId).map(e -> false).orElse(true);
 

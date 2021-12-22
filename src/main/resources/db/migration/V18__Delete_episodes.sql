@@ -1,0 +1,1 @@
+DELETE FROM inbox_podcast_episodes WHERE ignored = true;

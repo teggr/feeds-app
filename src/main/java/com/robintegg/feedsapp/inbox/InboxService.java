@@ -49,19 +49,17 @@ class InboxService implements Inbox {
 	@Override
 	public Page<InboxPodcastEpisode> getItems(String username, Pageable pageable) {
 
-		return podcastEpisodeRepository.findAllByUsernameAndIgnored(username, false, pageable);
+		return podcastEpisodeRepository.findAllByUsername(username, pageable);
 
 	}
 
 	@Override
-	public void ignore(String username, String episodeId) {
+	public void deleteItem(String username, String episodeId) {
 
 		InboxPodcastEpisode episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
 				.orElseThrow();
 
-		episode.setIgnored(true);
-
-		podcastEpisodeRepository.save(episode);
+		podcastEpisodeRepository.delete(episode);
 
 	}
 
@@ -82,18 +80,6 @@ class InboxService implements Inbox {
 	@Override
 	public List<InboxPodcastEpisode> getItemsForSubscription(String username, Long subscriptionId) {
 		return podcastEpisodeRepository.findAllByUsernameAndSubscriptionId(username, subscriptionId);
-	}
-
-	@Override
-	public void undoIgnore(String username, String episodeId) {
-
-		InboxPodcastEpisode episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
-				.orElseThrow();
-
-		episode.setIgnored(false);
-
-		podcastEpisodeRepository.save(episode);
-
 	}
 
 }
