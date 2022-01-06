@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,11 @@ class PodcastsService implements Podcasts {
 	@Override
 	public Podcast getPodcastForEpisode(String episodeId) {
 		return Podcast.fromEntity(podcastRepository.findEpisodeById(episodeId).get().getPodcast());
+	}
+
+	@Override
+	public Page<Episode> getEpisodes(Long id, Pageable pageable) {
+		return podcastRepository.findAllEpisodesById(id, pageable).map(PodcastEpisodeEntity::to);
 	}
 
 }
