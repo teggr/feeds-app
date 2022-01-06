@@ -64,8 +64,7 @@ public class PodcastsController {
 
 	@GetMapping("/podcasts/{id}")
 	public String get(@AuthenticationPrincipal User user, @PathVariable("id") Long id,
-			@PageableDefault(sort = "e.publishedDate", direction = Direction.DESC, size = 2) Pageable pageable,
-			Model model) {
+			@PageableDefault(sort = "e.publishedDate", direction = Direction.DESC) Pageable pageable, Model model) {
 
 		Podcast podcast = podcasts.get(id);
 		Page<Episode> episodes = podcasts.getEpisodes(id, pageable);
