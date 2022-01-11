@@ -15,8 +15,8 @@ interface InboxPodcastEpisodeRepository extends JpaRepository<InboxPodcastEpisod
 	List<InboxPodcastEpisode> findAllByUsernameAndReceivedDateTimeGreaterThan(String username,
 			LocalDateTime receivedDateTime);
 
-	Page<InboxPodcastEpisode> findAllByUsername(String username, Pageable pageable);
-
 	List<InboxPodcastEpisode> findAllByUsernameAndSubscriptionId(String username, Long subscriptionId);
+
+	Page<InboxPodcastEpisode> findAllByUsernameAndSaved(String username, boolean saved, Pageable pageable);
 
 }

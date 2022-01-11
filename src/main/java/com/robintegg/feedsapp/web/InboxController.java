@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.robintegg.feedsapp.inbox.Inbox;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeController {
+public class InboxController {
 
 	private static final HateoasPageableHandlerMethodArgumentResolver RESOLVER = new HateoasPageableHandlerMethodArgumentResolver();
 
@@ -27,8 +28,9 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String get(@AuthenticationPrincipal User user,
+			@RequestParam(name = "saved", required = false, defaultValue = "false") boolean saved,
 			@PageableDefault(sort = "episodePublishedDate", direction = Direction.ASC) Pageable pageable, Model model) {
-		Page<InboxPodcastEpisode> items = inbox.getItems(user.getUsername(), pageable);
+		Page<InboxPodcastEpisode> items = inbox.getItems(user.getUsername(), saved, pageable);
 		model.addAttribute("items", items);
 		if (items.hasNext()) {
 			Pageable nextPageable = items.nextPageable();
@@ -36,6 +38,7 @@ public class HomeController {
 			RESOLVER.enhance(uriComponentsBuilder, null, nextPageable);
 			model.addAttribute("next", uriComponentsBuilder.build().toUriString());
 		}
+		model.addAttribute("saved", saved);
 		return "inbox";
 	}
 

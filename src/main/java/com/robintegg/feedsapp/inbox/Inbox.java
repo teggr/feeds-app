@@ -16,7 +16,7 @@ public interface Inbox {
 
 	void moveAllPodcastEpidodesToInbox(String username);
 
-	Page<InboxPodcastEpisode> getItems(String username, Pageable pageable);
+	Page<InboxPodcastEpisode> getItems(String username, boolean saved, Pageable pageable);
 
 	void deleteItem(String username, String episodeId);
 
@@ -25,5 +25,7 @@ public interface Inbox {
 	InboxPodcastEpisode getItem(String username, String episodeId);
 
 	List<InboxPodcastEpisode> getItemsForSubscription(String username, Long subscriptionId);
+
+	void saveItem(String episodeId, String username);
 
 }

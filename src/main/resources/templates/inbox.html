@@ -7,7 +7,21 @@
 <th:block th:replace="fragments/nav/navbar :: main-navigation" />
 
 <section class="section">
-    <h1 class="title">Inbox</h1>
+    <!--<h1 class="title">Inbox</h1>-->
+    <div class="tabs is-toggle is-toggle-rounded">
+	  <ul>
+	    <li th:classAppend="${saved} ? '' : 'is-active'">
+	      <a th:href="@{/}">
+	        Inbox
+	      </a>
+	    </li>
+	    <li th:classAppend="${saved} ? 'is-active' : ''">
+	      <a th:href="@{/?saved=true}">
+	         Saved
+	      </a>
+	    </li>
+	  </ul>
+	</div>
     <ul id="items">
         <li th:each="item : ${items}">
             <div class="box">
@@ -32,6 +46,9 @@
   											</p>
   											<p class="control">
 	                                    		<button type="button" class="button is-danger is-outlined" onclick="window.delete();" >Delete</button>
+  											</p>
+  											<p class="control" th:unless="${saved}">
+	                                    		<button type="button" class="button is-warning is-outlined" onclick="window.saveForLater();" >Save For Later</button>
   											</p>
 	                                	</div>
 	                            	</form>
@@ -124,6 +141,42 @@
         
         fetch( $form.action , {
                         method: 'DELETE',
+                        headers: myHeaders
+                    })
+                    .then(response => response)
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+		
+		return false;
+	
+	}
+	
+	window.saveForLater = function(e) {
+	    e = e || window.event;
+	    
+	    e.preventDefault();
+	    
+	    const $element = e.target || e.srcElement;
+	    
+	    const $form = $element.form;
+	    
+	    const $target = $element.closest('li');
+	    
+	    // Toggle the "is-hidden" class on the parent list element
+        $target.classList.toggle('is-hidden');
+        
+        var token = document.getElementsByName('_csrf')[0].getAttribute('content');
+		var header = document.getElementsByName('_csrf_header')[0].getAttribute('content');
+        
+        var myHeaders = new Headers();
+		myHeaders.append(header, token);
+        
+        fetch( $form.action + "/save" , {
+                        method: 'POST',
                         headers: myHeaders
                     })
                     .then(response => response)

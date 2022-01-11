@@ -47,9 +47,9 @@ class InboxService implements Inbox {
 	}
 
 	@Override
-	public Page<InboxPodcastEpisode> getItems(String username, Pageable pageable) {
+	public Page<InboxPodcastEpisode> getItems(String username, boolean saved, Pageable pageable) {
 
-		return podcastEpisodeRepository.findAllByUsername(username, pageable);
+		return podcastEpisodeRepository.findAllByUsernameAndSaved(username, saved, pageable);
 
 	}
 
@@ -80,6 +80,18 @@ class InboxService implements Inbox {
 	@Override
 	public List<InboxPodcastEpisode> getItemsForSubscription(String username, Long subscriptionId) {
 		return podcastEpisodeRepository.findAllByUsernameAndSubscriptionId(username, subscriptionId);
+	}
+
+	@Override
+	public void saveItem(String episodeId, String username) {
+
+		InboxPodcastEpisode episode = podcastEpisodeRepository.findByUsernameAndEpisodeId(username, episodeId)
+				.orElseThrow();
+
+		episode.setSaved(true);
+
+		podcastEpisodeRepository.save(episode);
+
 	}
 
 }

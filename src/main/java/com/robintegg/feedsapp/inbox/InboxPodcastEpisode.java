@@ -84,4 +84,7 @@ public class InboxPodcastEpisode {
 	@Column(name = "episode_audio_type")
 	private String episodeAudioType;
 
+	@Column(name = "saved")
+	private boolean saved;
+
 }
